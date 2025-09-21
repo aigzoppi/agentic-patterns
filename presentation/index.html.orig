@@ -1,0 +1,2659 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github-dark.css">
+    <style>
+        :root {
+            --primary-color: #42affa;
+            --secondary-color: #ff6b6b;
+            --accent-color: #4ecdc4;
+            --background-dark: #1e1e1e;
+            --text-light: #ffffff;
+        }
+
+        .reveal {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            color: var(--text-light);
+            text-transform: none;
+            line-height: 1.2;
+        }
+
+        .reveal h1 {
+            font-size: 2.5em;
+            color: var(--primary-color);
+        }
+
+        .reveal h2 {
+            font-size: 1.5em;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.3em;
+        }
+
+        .reveal code {
+            font-size: 0.7em;
+            line-height: 1.3;
+            color: var(--primary-color);
+        }
+
+        .reveal pre {
+            font-size: 0.8em;
+            line-height: 1.2;
+        }
+
+        .reveal pre code {
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 1em;
+            border-radius: 8px;
+            background: #2d2d2d;
+        }
+
+        .code-title {
+            color: var(--primary-color);
+            font-size: 2.0em;
+            margin-bottom: 0.5em;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            color: #000;
+            padding: 0.2em 0.5em;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1em;
+            margin: 1em 0;
+        }
+
+        .pattern-grid-six {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8em;
+            margin: 1em 0;
+        }
+
+        .pattern-card {
+            background: linear-gradient(135deg, rgba(66, 175, 250, 0.1), rgba(78, 205, 196, 0.1));
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 1em;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .pattern-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(66, 175, 250, 0.3);
+        }
+
+        .pattern-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5em;
+            font-size: 1.2em;
+        }
+
+        .pattern-section {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1em;
+            margin: 1em 0;
+            background: rgba(66, 175, 250, 0.05);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .vs-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2em;
+            align-items: start;
+        }
+
+        .small-text {
+            font-size: 0.8em;
+            line-height: 1.4;
+        }
+
+        .reveal ul {
+            list-style: none;
+        }
+
+        .reveal li::before {
+            content: "→";
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-right: 0.5em;
+        }
+
+        .flow-diagram {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1em;
+            margin: 1em 0;
+            font-family: monospace;
+            text-align: center;
+        }
+
+        .emphasis-box {
+            background: linear-gradient(45deg, rgba(66, 175, 250, 0.2), rgba(255, 107, 107, 0.2));
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 1.5em;
+            margin: 1em 0;
+            text-align: center;
+        }
+
+        .reveal .progress {
+            color: var(--primary-color);
+        }
+
+        .reveal .controls {
+            color: var(--primary-color);
+        }
+
+        /* Animation for pattern cards */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal .present .pattern-card {
+            animation: slideInUp 0.6s ease forwards;
+        }
+
+        /* Numbered steps */
+        .numbered-list {
+            counter-reset: step-counter;
+        }
+
+        .numbered-list li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 2em;
+        }
+
+        .numbered-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--primary-color);
+            color: #000;
+            width: 1.5em;
+            height: 1.5em;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Title Slide -->
+            <section data-background-gradient="linear-gradient(45deg, #1e1e1e, #2d2d2d)">
+                <section>
+                <h1>Agentic AI Design Patterns</h1>
+    
+                <h2 style="color: #42affa;">How we structure LLM applications</h2>
+                <div class="emphasis-box">
+                    <h3>8 Essential Patterns for Autonomous AI Systems</h3>
+                    <p class="small-text">
+                        <span class="highlight">Prompt Chaining</span> • 
+                        <span class="highlight">Routing</span> • 
+                        <span class="highlight">Parallelization</span> • 
+                        <span class="highlight">Reflection</span> • 
+                        <span class="highlight">Tool Use</span> • 
+                        <span class="highlight">Learning</span> • 
+                        <span class="highlight">Human-in-the-Loop</span> • 
+                        <span class="highlight">A2A Communication</span>
+                    </p>
+                </div>
+                </section>
+                          <section>
+                <h2>Based on Agentic Pattern Book</h2>
+                <img src="./agentic_design_pattern.jpg"/>
+            </section>
+
+            </section>
+
+            <!-- Overview -->
+            <section>
+                <h2>Pattern Overview</h2>
+                <div class="pattern-grid-six">
+                    <div class="pattern-card">
+                        <h4>Prompt Chaining</h4>
+                        <p class="small-text">Break complex tasks into focused, manageable steps</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>🧭 Routing</h4>
+                        <p class="small-text">Intelligent decision-making and delegation</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>⚡ Parallelization</h4>
+                        <p class="small-text">Execute independent tasks simultaneously</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>🔄 Reflection</h4>
+                        <p class="small-text">Self-correction and continuous improvement</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>🛠️ Tool Use</h4>
+                        <p class="small-text">External system integration and real-world interaction</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>🧠 Learning</h4>
+                        <p class="small-text">Autonomous evolution and self-improvement</p>
+                    </div>
+                </div>
+                <div class="vs-comparison" style="margin-top: 1em;">
+                    <div class="pattern-card" style="width: 100%;">
+                        <h4>👥 Human-in-the-Loop</h4>
+                        <p class="small-text"><span class="highlight">Collaborative</span> • AI-human cooperation for optimal outcomes</p>
+                    </div>
+                    <div class="pattern-card" style="width: 100%;">
+                        <h4>🤖 A2A Communication</h4>
+                        <p class="small-text"><span class="highlight">Inter-Agent</span> • Cross-framework agent collaboration and coordination</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pattern 1: Chaining -->
+            <section>
+                <section>
+                    <h2>Prompt Chaining</h2>
+                    <div class="pattern-section">
+                        <h3>Sequential Processing Excellence</h3>
+                        <p>Break complex workflows into focused, manageable steps with clear state transitions</p>
+                    </div>
+                    <div class="flow-diagram">
+                        <p>Input → Extract → Transform → Validate → Output</p>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Key Benefits</h4>
+                            <ul class="small-text">
+                                <li>Clear separation of concerns</li>
+                                <li>Easy debugging and maintenance</li>
+                                <li>Predictable execution flow</li>
+                                <li>Robust error handling</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Use Cases</h4>
+                            <ul class="small-text">
+                                <li>Data processing pipelines</li>
+                                <li>Document analysis workflows</li>
+                                <li>Multi-step calculations</li>
+                                <li>Content generation flows</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Prompt Chaining Implementation</h3>
+                    <section>
+                        <h2>Define State</h2>
+                        <pre><code class="python"> 
+from langgraph.graph import StateGraph, END
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_openai import ChatOpenAI
+# --- Initialize the LLM ---
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+# --- Define the State ---
+# The state will carry data between nodes
+from typing import TypedDict
+class State(TypedDict):
+    text_input: str
+    specifications: str
+    final_json: str
+
+
+
+</code></pre>
+                    </section>
+                    <section><h2>Define Nodes</h2>
+                    <pre>
+                        <code class="python">
+def extract_specs(state: State):
+    """Extract technical specifications from text_input"""
+    prompt = ChatPromptTemplate.from_template(
+        "Extract the technical specifications from the following text:\n\n{text_input}"
+    )
+    chain = prompt | llm | StrOutputParser()
+    result = chain.invoke({"text_input": state["text_input"]})
+    return {"specifications": result}
+
+def transform_to_json(state: State):
+    """Transform extracted specs into JSON"""
+    prompt = ChatPromptTemplate.from_template(
+        "Transform the following specifications into a JSON object with 'cpu', 'memory', and 'storage' as keys:\n\n{specifications}"
+    )
+    chain = prompt | llm | StrOutputParser()
+    result = chain.invoke({"specifications": state["specifications"]})
+    return {"final_json": result}
+
+                    </code></pre>
+                </section>
+            </section>
+
+            <!-- Pattern 8: A2A Communication -->
+            <section>
+                <section>
+                    <h2>Pattern 8: A2A Communication</h2>
+                    <div class="pattern-section">
+                        <h3>Inter-Agent Communication Protocol</h3>
+                        <p>Google's A2A enables cross-framework agent collaboration through standardized HTTP-based communication</p>
+                    </div>
+                    <div class="flow-diagram">
+                        <p>Agent Discovery → Agent Card → HTTP Communication → Task Coordination → Result Exchange</p>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Core Components</h4>
+                            <ul class="small-text">
+                                <li>Agent Cards (digital identity)</li>
+                                <li>JSON-RPC 2.0 messaging</li>
+                                <li>Agent discovery mechanisms</li>
+                                <li>Multi-modal communication</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Communication Modes</h4>
+                            <ul class="small-text">
+                                <li>Synchronous request/response</li>
+                                <li>Asynchronous polling</li>
+                                <li>Server-sent events (SSE)</li>
+                                <li>Webhook notifications</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>A2A Protocol Implementation</h3>
+                    <div class="code-title">Agent Card Definition & HTTP Communication</div>
+                    <pre><code class="python">
+# Agent Card - Digital Identity for A2A Discovery
+agent_card = {
+    "name": "WeatherBot",
+    "description": "Provides accurate weather forecasts and historical data.",
+    "url": "http://weather-service.example.com/a2a",
+    "version": "1.0.0",
+    "capabilities": {
+        "streaming": True,
+        "pushNotifications": False,
+        "stateTransitionHistory": True
+    },
+    "authentication": {
+        "schemes": ["apiKey"]
+    },
+    "defaultInputModes": ["text"],
+    "defaultOutputModes": ["text"],
+    "skills": [
+        {
+            "id": "get_current_weather",
+            "name": "Get Current Weather",
+            "description": "Retrieve real-time weather for any location.",
+            "inputModes": ["text"],
+            "outputModes": ["text"],
+            "examples": [
+                "What's the weather in Paris?",
+                "Current conditions in Tokyo"
+            ],
+            "tags": ["weather", "current", "real-time"]
+        }
+    ]
+}
+
+# Synchronous A2A Request using JSON-RPC 2.0
+synchronous_request = {
+    "jsonrpc": "2.0",
+    "id": "1",
+    "method": "sendTask",
+    "params": {
+        "id": "task-001",
+        "sessionId": "session-001",
+        "message": {
+            "role": "user",
+            "parts": [
+                {
+                    "type": "text",
+                    "text": "What is the exchange rate from USD to EUR?"
+                }
+            ]
+        },
+        "acceptedOutputModes": ["text/plain"],
+        "historyLength": 5
+    }
+}
+
+# Streaming A2A Request for Real-time Updates
+streaming_request = {
+    "jsonrpc": "2.0",
+    "id": "2",
+    "method": "sendTaskSubscribe",
+    "params": {
+        "id": "task-002",
+        "sessionId": "session-001",
+        "message": {
+            "role": "user",
+            "parts": [
+                {
+                    "type": "text",
+                    "text": "What's the exchange rate for JPY to GBP today?"
+                }
+            ]
+        },
+        "acceptedOutputModes": ["text/plain"],
+        "historyLength": 5
+    }
+}
+
+# A2A Agent Implementation with Google ADK
+import asyncio
+import os
+from google.adk.agents import LlmAgent
+from google.adk.tools.google_api_tool import CalendarToolset
+
+async def create_a2a_agent(client_id, client_secret) -> LlmAgent:
+    """Create ADK agent for A2A communication"""
+    
+    toolset = CalendarToolset(client_id=client_id, client_secret=client_secret)
+    
+    return LlmAgent(
+        model='gemini-2.0-flash-001',
+        name='calendar_agent',
+        description="An agent that can help manage a user's calendar",
+        instruction=f"""
+        You are an A2A-compliant agent that can manage calendars.
+        
+        Users will request calendar information or modifications.
+        Use the provided tools for Google Calendar API interactions.
+        
+        Respond using A2A protocol standards with proper task states
+        and artifact generation for complex results.
+        
+        Today is {datetime.datetime.now()}.
+        """,
+        tools=await toolset.get_tools(),
+    )
+
+class A2AAgentServer:
+    """A2A Server implementation for cross-framework communication"""
+    
+    def __init__(self, agent_card, adk_agent):
+        self.agent_card = agent_card
+        self.adk_agent = adk_agent
+        self.active_tasks = {}
+    
+    async def handle_agent_discovery(self):
+        """Serve agent card at well-known URI"""
+        return self.agent_card
+    
+    async def handle_synchronous_task(self, request):
+        """Handle synchronous A2A task requests"""
+        
+        task_id = request["params"]["id"]
+        message = request["params"]["message"]
+        
+        # Process task with ADK agent
+        response = await self.adk_agent.process(message["parts"][0]["text"])
+        
+        return {
+            "jsonrpc": "2.0",
+            "id": request["id"],
+            "result": {
+                "taskId": task_id,
+                "status": "completed",
+                "artifacts": [
+                    {
+                        "type": "text",
+                        "content": response.content
+                    }
+                ]
+            }
+        }
+    
+    async def handle_streaming_task(self, request):
+        """Handle streaming A2A task requests with SSE"""
+        
+        task_id = request["params"]["id"]
+        message = request["params"]["message"]
+        
+        # Start streaming response
+        yield {
+            "taskId": task_id,
+            "status": "working",
+            "message": "Processing request..."
+        }
+        
+        # Process with ADK agent and stream results
+        async for chunk in self.adk_agent.stream(message["parts"][0]["text"]):
+            yield {
+                "taskId": task_id,
+                "status": "working",
+                "partialArtifact": {
+                    "type": "text",
+                    "content": chunk.content
+                }
+            }
+        
+        # Final completion
+        yield {
+            "taskId": task_id,
+            "status": "completed",
+            "artifacts": [
+                {
+                    "type": "text",
+                    "content": "Task completed successfully"
+                }
+            ]
+        }
+
+# Multi-Framework A2A Coordination
+class A2AOrchestrator:
+    """Orchestrate tasks across different agent frameworks via A2A"""
+    
+    def __init__(self):
+        self.registered_agents = {}
+        self.discovery_registry = {}
+    
+    async def discover_agents(self, capability_tags):
+        """Discover agents by capabilities using A2A protocol"""
+        
+        suitable_agents = []
+        
+        for agent_url, agent_card in self.discovery_registry.items():
+            for skill in agent_card.get("skills", []):
+                if any(tag in skill.get("tags", []) for tag in capability_tags):
+                    suitable_agents.append({
+                        "agent_url": agent_url,
+                        "agent_card": agent_card,
+                        "matching_skills": [s for s in agent_card["skills"] 
+                                          if any(tag in s.get("tags", []) for tag in capability_tags)]
+                    })
+        
+        return suitable_agents
+    
+    async def coordinate_multi_agent_task(self, user_request, required_capabilities):
+        """Coordinate task across multiple agents using A2A"""
+        
+        # Discover suitable agents
+        available_agents = await self.discover_agents(required_capabilities)
+        
+        if not available_agents:
+            return {"error": "No suitable agents found"}
+        
+        # Delegate tasks to specialized agents
+        task_results = {}
+        
+        for capability in required_capabilities:
+            # Find best agent for this capability
+            best_agent = self._select_best_agent(available_agents, capability)
+            
+            if best_agent:
+                # Send A2A request to specialized agent
+                task_result = await self._send_a2a_request(
+                    best_agent["agent_url"], 
+                    user_request, 
+                    capability
+                )
+                task_results[capability] = task_result
+        
+        # Synthesize results from multiple agents
+        return await self._synthesize_multi_agent_results(task_results)
+    
+    def _select_best_agent(self, agents, capability):
+        """Select best agent for specific capability"""
+        for agent in agents:
+            for skill in agent["matching_skills"]:
+                if capability in skill.get("tags", []):
+                    return agent
+        return None
+    
+    async def _send_a2a_request(self, agent_url, request, capability):
+        """Send HTTP request to A2A-compliant agent"""
+        
+        a2a_request = {
+            "jsonrpc": "2.0",
+            "id": f"task-{capability}",
+            "method": "sendTask",
+            "params": {
+                "id": f"orchestrated-{capability}",
+                "message": {
+                    "role": "user",
+                    "parts": [{"type": "text", "text": request}]
+                }
+            }
+        }
+        
+        # HTTP POST to agent endpoint
+        # Implementation would use aiohttp or similar
+        return {"status": "completed", "result": "Agent response"}
+    
+    async def _synthesize_multi_agent_results(self, results):
+        """Combine results from multiple A2A agents"""
+        
+        synthesis = "Multi-agent collaboration results:\n"
+        for capability, result in results.items():
+            synthesis += f"{capability}: {result.get('result', 'No result')}\n"
+        
+        return {
+            "status": "completed",
+            "synthesis": synthesis,
+            "individual_results": results
+        }
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>A2A vs MCP Protocols</h3>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>A2A (Agent-to-Agent)</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Purpose:</span> Inter-agent communication and coordination</li>
+                                <li><span class="highlight">Scope:</span> Multi-agent system orchestration</li>
+                                <li><span class="highlight">Protocol:</span> HTTP-based with JSON-RPC 2.0</li>
+                                <li><span class="highlight">Discovery:</span> Agent Cards and registries</li>
+                                <li><span class="highlight">Use Case:</span> Cross-framework agent collaboration</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>MCP (Model Context Protocol)</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Purpose:</span> Model-to-resource communication</li>
+                                <li><span class="highlight">Scope:</span> External data and tool access</li>
+                                <li><span class="highlight">Protocol:</span> Standardized context interface</li>
+                                <li><span class="highlight">Discovery:</span> Resource and tool catalogs</li>
+                                <li><span class="highlight">Use Case:</span> LLM external system integration</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pattern-section">
+                        <h4>Complementary Protocols</h4>
+                        <p class="small-text">A2A enables agent-to-agent collaboration while MCP handles agent-to-resource communication. Together they provide comprehensive connectivity for multi-agent systems.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Pattern 2: Routing -->
+            <section>
+                <section>
+                    <h2>Pattern 2: Routing</h2>
+                    <div class="pattern-section">
+                        <h3>Intelligent Coordination</h3>
+                        <p>Supervisor-based delegation with specialized agents for different scenarios</p>
+                    </div>
+                    <div class="flow-diagram">
+                        <p>Request → Supervisor → Intent Analysis → Specialist Agent → Response</p>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Routing Strategies</h4>
+                            <ul class="small-text">
+                                <li>Intent-based classification</li>
+                                <li>Confidence thresholds</li>
+                                <li>Fallback mechanisms</li>
+                                <li>Load balancing</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Architecture Benefits</h4>
+                            <ul class="small-text">
+                                <li>Specialized expertise</li>
+                                <li>Scalable team coordination</li>
+                                <li>Flexible system expansion</li>
+                                <li>Clear responsibility boundaries</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Supervisor Pattern Implementation</h3>
+                    <div class="code-title">Multi-Agent Coordination Following LangGraph Tutorial</div>
+                    <pre><code class="python">
+from langgraph.graph import StateGraph, END
+from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_openai import ChatOpenAI
+from typing import Literal
+
+# Define team members
+members = ["researcher", "coder", "writer"]
+system_prompt = (
+    "You are a supervisor tasked with managing a conversation between the"
+    " following workers: {members}. Given the following user request,"
+    " respond with the worker to act next. Each worker will perform a"
+    " task and respond with their results and status. When finished,"
+    " respond with FINISH."
+)
+
+options = ["FINISH"] + members
+
+class SupervisorState(TypedDict):
+    messages: list
+    next: str
+
+def supervisor_agent(state):
+    """Supervisor agent that routes to appropriate team member"""
+    
+    llm = ChatOpenAI(model="gpt-4")
+    
+    # Create supervisor prompt with current conversation
+    supervisor_prompt = system_prompt.format(members=", ".join(members))
+    messages = [
+        SystemMessage(content=supervisor_prompt)
+    ] + state["messages"]
+    
+    # Get supervisor decision
+    response = llm.invoke(messages)
+    
+    # Parse the response to determine next worker
+    next_worker = "FINISH"
+    for option in options:
+        if option in response.content:
+            next_worker = option
+            break
+    
+    return {"next": next_worker}
+
+def researcher_node(state):
+    """Research specialist agent"""
+    messages = state["messages"]
+    result = "Research completed: I found relevant information about the topic."
+    return {"messages": messages + [HumanMessage(content=result, name="researcher")]}
+
+def coder_node(state):
+    """Code specialist agent"""
+    messages = state["messages"]
+    result = "Code implementation completed: Here's the working solution."
+    return {"messages": messages + [HumanMessage(content=result, name="coder")]}
+
+def writer_node(state):
+    """Writing specialist agent"""
+    messages = state["messages"]
+    result = "Writing completed: I've drafted the content with proper structure."
+    return {"messages": messages + [HumanMessage(content=result, name="writer")]}
+
+def router(state) -> Literal["researcher", "coder", "writer", "__end__"]:
+    """Route to next agent or finish"""
+    return state["next"] if state["next"] != "FINISH" else "__end__"
+
+# Build the supervisor workflow
+workflow = StateGraph(SupervisorState)
+
+# Add nodes
+workflow.add_node("supervisor", supervisor_agent)
+workflow.add_node("researcher", researcher_node)
+workflow.add_node("coder", coder_node)
+workflow.add_node("writer", writer_node)
+
+# Add edges
+workflow.add_edge("researcher", "supervisor")
+workflow.add_edge("coder", "supervisor")
+workflow.add_edge("writer", "supervisor")
+
+# Add conditional edges from supervisor
+workflow.add_conditional_edges(
+    "supervisor",
+    router,
+    {
+        "researcher": "researcher",
+        "coder": "coder",
+        "writer": "writer",
+        "__end__": END
+    }
+)
+
+# Set entry point
+workflow.set_entry_point("supervisor")
+
+# Compile the graph
+supervisor_chain = workflow.compile()
+
+# Usage example
+def run_supervisor_example():
+    initial_state = {
+        "messages": [
+            HumanMessage(content="Write a Python script to analyze CSV data and create visualizations")
+        ]
+    }
+    
+    for step in supervisor_chain.stream(initial_state):
+        print(step)
+                    </code></pre>
+                </section>
+            </section>
+
+            <!-- Pattern 3: Parallelization -->
+            <section>
+                <section>
+                    <h2>Pattern 3: Parallelization</h2>
+                    <div class="pattern-section">
+                        <h3>Concurrent Processing Power</h3>
+                        <p>Execute independent tasks simultaneously for optimal performance and efficiency</p>
+                    </div>
+                    <div class="flow-diagram">
+                        <p>Complex Task → Coordinator → [Task A | Task B | Task C] → Synthesizer → Result</p>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Parallelization Benefits</h4>
+                            <ul class="small-text">
+                                <li>Reduced total execution time</li>
+                                <li>Better resource utilization</li>
+                                <li>Improved system throughput</li>
+                                <li>Enhanced user experience</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Critical Requirements</h4>
+                            <ul class="small-text">
+                                <li>Task independence</li>
+                                <li>Resource management</li>
+                                <li>Error isolation</li>
+                                <li>Result synchronization</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Parallel Execution Implementation</h3>
+                    <div class="code-title">Concurrent Task Processing</div>
+                    <pre><code class="python">
+import asyncio
+from typing import List, Dict, Any
+
+class ParallelState(TypedDict):
+    user_query: str
+    research_results: Dict[str, Any]
+    analysis_results: Dict[str, Any]
+    tool_outputs: Dict[str, Any]
+    synthesis_result: str
+
+async def research_task(state: ParallelState) -> Dict[str, Any]:
+    """Conduct background research independently"""
+    # Simulate async research
+    await asyncio.sleep(1)
+    return {
+        "research_results": {
+            "sources": ["academic_paper_1", "news_article_2"],
+            "key_findings": "Research indicates positive trends",
+            "confidence": 0.85
+        }
+    }
+
+async def analysis_task(state: ParallelState) -> Dict[str, Any]:
+    """Perform data analysis independently"""
+    # Simulate async analysis
+    await asyncio.sleep(1.2)
+    return {
+        "analysis_results": {
+            "metrics": {"accuracy": 0.92, "precision": 0.88},
+            "trends": "upward_trajectory",
+            "recommendations": ["optimize_x", "enhance_y"]
+        }
+    }
+
+async def tool_execution_task(state: ParallelState) -> Dict[str, Any]:
+    """Execute external tools independently"""
+    # Simulate async tool calls
+    await asyncio.sleep(0.8)
+    return {
+        "tool_outputs": {
+            "weather_api": {"temp": 22, "conditions": "sunny"},
+            "stock_api": {"price": 150.25, "change": "+2.3%"},
+            "news_api": {"headlines": ["Tech stocks rise", "AI breakthrough"]}
+        }
+    }
+
+def synthesis_task(state: ParallelState) -> ParallelState:
+    """Combine all parallel results into final response"""
+    combined_data = {
+        "research": state["research_results"],
+        "analysis": state["analysis_results"], 
+        "external_data": state["tool_outputs"]
+    }
+    
+    synthesis = f"""
+    Based on research findings ({state['research_results']['confidence']:.0%} confidence)
+    and analysis metrics (accuracy: {state['analysis_results']['metrics']['accuracy']:.0%}),
+    combined with real-time data from external sources,
+    the recommendation is: {', '.join(state['analysis_results']['recommendations'])}
+    """
+    
+    return {**state, "synthesis_result": synthesis.strip()}
+
+# Parallel execution coordinator
+async def execute_parallel_workflow(user_query: str) -> ParallelState:
+    """Execute independent tasks in parallel, then synthesize"""
+    
+    initial_state = ParallelState(
+        user_query=user_query,
+        research_results={},
+        analysis_results={},
+        tool_outputs={},
+        synthesis_result=""
+    )
+    
+    # Execute independent tasks concurrently
+    tasks = [
+        research_task(initial_state),
+        analysis_task(initial_state),
+        tool_execution_task(initial_state)
+    ]
+    
+    results = await asyncio.gather(*tasks)
+    
+    # Merge parallel results
+    for result in results:
+        initial_state.update(result)
+    
+    # Synthesize final result
+    final_state = synthesis_task(initial_state)
+    return final_state
+                    </code></pre>
+                </section>
+            </section>
+
+            <!-- Pattern 4: Reflection -->
+            <section>
+                <section>
+                    <h2>Pattern 4: Reflection</h2>
+                    <div class="pattern-section">
+                        <h3>Continuous Self-Improvement</h3>
+                        <p>Iterative critique and refinement cycles for enhanced output quality</p>
+                    </div>
+                    <div class="flow-diagram">
+                        <p>Generate → Critique → Refine → Quality Check → [Iterate | Complete]</p>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Reflection Components</h4>
+                            <ul class="small-text">
+                                <li>Producer agent (generation)</li>
+                                <li>Critic agent (evaluation)</li>
+                                <li>Quality thresholds</li>
+                                <li>Iteration limits</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Quality Dimensions</h4>
+                            <ul class="small-text">
+                                <li>Accuracy and correctness</li>
+                                <li>Completeness and depth</li>
+                                <li>Clarity and readability</li>
+                                <li>Relevance to requirements</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Producer-Critic Loop</h3>
+                    <div class="code-title">Iterative Quality Improvement</div>
+                    <pre><code class="python">
+class ReflectionState(TypedDict):
+    task_description: str
+    current_output: str
+    critique: str
+    quality_score: float
+    iteration_count: int
+    max_iterations: int
+    approved: bool
+
+def producer_agent(state: ReflectionState) -> ReflectionState:
+    """Generate or improve output based on feedback"""
+    
+    if state["iteration_count"] == 0:
+        # Initial generation
+        output = generate_initial_response(state["task_description"])
+    else:
+        # Improvement based on critique
+        output = improve_response(
+            state["current_output"], 
+            state["critique"],
+            state["task_description"]
+        )
+    
+    return {
+        **state,
+        "current_output": output,
+        "iteration_count": state["iteration_count"] + 1
+    }
+
+def critic_agent(state: ReflectionState) -> ReflectionState:
+    """Evaluate current output and provide detailed feedback"""
+    
+    evaluation_criteria = {
+        "accuracy": 0.0,
+        "completeness": 0.0,
+        "clarity": 0.0,
+        "relevance": 0.0
+    }
+    
+    # Evaluate each dimension
+    evaluation_criteria["accuracy"] = evaluate_accuracy(
+        state["current_output"], state["task_description"]
+    )
+    evaluation_criteria["completeness"] = evaluate_completeness(
+        state["current_output"], state["task_description"]
+    )
+    evaluation_criteria["clarity"] = evaluate_clarity(state["current_output"])
+    evaluation_criteria["relevance"] = evaluate_relevance(
+        state["current_output"], state["task_description"]
+    )
+    
+    # Calculate overall quality score
+    quality_score = sum(evaluation_criteria.values()) / len(evaluation_criteria)
+    
+    # Generate specific critique
+    critique = generate_critique(evaluation_criteria, state["current_output"])
+    
+    # Determine if approved
+    approved = quality_score >= 0.8  # 80% threshold
+    
+    return {
+        **state,
+        "critique": critique,
+        "quality_score": quality_score,
+        "approved": approved
+    }
+
+def should_continue_reflection(state: ReflectionState) -> str:
+    """Determine if reflection should continue"""
+    
+    if state["approved"]:
+        return "complete"
+    elif state["iteration_count"] >= state["max_iterations"]:
+        return "complete"  # Max iterations reached
+    else:
+        return "continue"
+
+def evaluate_accuracy(output: str, task: str) -> float:
+    """Evaluate factual accuracy of output"""
+    # Implementation would use fact-checking logic
+    return 0.85  # Placeholder
+
+def evaluate_completeness(output: str, task: str) -> float:
+    """Evaluate if output fully addresses the task"""
+    # Implementation would check coverage
+    return 0.75  # Placeholder
+
+def evaluate_clarity(output: str) -> float:
+    """Evaluate clarity and readability"""
+    # Implementation would use readability metrics
+    return 0.9   # Placeholder
+
+def evaluate_relevance(output: str, task: str) -> float:
+    """Evaluate relevance to the original task"""
+    # Implementation would use semantic similarity
+    return 0.8   # Placeholder
+
+# Build reflection workflow
+workflow = StateGraph(ReflectionState)
+workflow.add_node("producer", producer_agent)
+workflow.add_node("critic", critic_agent)
+
+workflow.add_edge("producer", "critic")
+workflow.add_conditional_edges(
+    "critic",
+    should_continue_reflection,
+    {
+        "continue": "producer",
+        "complete": END
+    }
+)
+
+workflow.set_entry_point("producer")
+reflection_system = workflow.compile()
+                    </code></pre>
+                </section>
+            </section>
+
+            <!-- Pattern 5: Tool Use -->
+            <section>
+                <section>
+                    <h2>Pattern 5: Tool Use</h2>
+                    <div class="pattern-section">
+                        <h3>Real-World Integration</h3>
+                        <p>Secure, monitored access to external systems and real-time data sources</p>
+                    </div>
+                    <div class="flow-diagram">
+                        <p>Query → Tool Selection → API Call → Validation → Integration → Response</p>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Tool Categories</h4>
+                            <ul class="small-text">
+                                <li>Data retrieval APIs</li>
+                                <li>Computational tools</li>
+                                <li>Communication systems</li>
+                                <li>Business applications</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Security Requirements</h4>
+                            <ul class="small-text">
+                                <li>Input validation</li>
+                                <li>Rate limiting</li>
+                                <li>Error handling</li>
+                                <li>Audit logging</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Secure Tool Integration</h3>
+                    <div class="code-title">External System Access with Safety</div>
+                    <pre><code class="python">
+from langchain_core.tools import tool
+from typing import List, Dict, Any
+import json
+import time
+
+class ToolManager:
+    def __init__(self):
+        self.rate_limits = {}
+        self.audit_log = []
+        self.security_config = {
+            "max_calls_per_minute": 60,
+            "allowed_domains": ["api.weather.com", "api.news.com"],
+            "dangerous_operations": ["delete", "modify", "admin"]
+        }
+
+    def validate_tool_call(self, tool_name: str, args: Dict[str, Any]) -> bool:
+        """Validate tool call for security and rate limits"""
+        
+        # Rate limiting check
+        current_time = time.time()
+        if tool_name in self.rate_limits:
+            recent_calls = [t for t in self.rate_limits[tool_name] 
+                          if current_time - t < 60]  # Last minute
+            if len(recent_calls) >= self.security_config["max_calls_per_minute"]:
+                return False
+        
+        # Security validation
+        for dangerous_op in self.security_config["dangerous_operations"]:
+            if dangerous_op in str(args).lower():
+                return False
+        
+        return True
+
+    def log_tool_usage(self, tool_name: str, args: Dict[str, Any], result: Any):
+        """Audit log for tool usage"""
+        self.audit_log.append({
+            "timestamp": time.time(),
+            "tool": tool_name,
+            "args": args,
+            "success": result is not None,
+            "result_type": type(result).__name__
+        })
+
+@tool
+def get_weather(location: str) -> str:
+    """Get current weather information for a specific location"""
+    # Simulate weather API call
+    weather_data = {
+        "temperature": 22,
+        "conditions": "partly cloudy", 
+        "humidity": 65,
+        "wind_speed": 15
+    }
+    return json.dumps(weather_data)
+
+@tool
+def search_news(query: str, max_results: int = 5) -> str:
+    """Search for recent news articles on a given topic"""
+    # Simulate news API call
+    articles = [
+        {
+            "title": f"Latest developments in {query}",
+            "summary": f"Recent news about {query} shows positive trends",
+            "source": "TechNews",
+            "published": "2024-01-20"
+        }
+    ]
+    return json.dumps(articles[:max_results])
+
+@tool
+def calculate_metrics(data: List[float]) -> str:
+    """Calculate statistical metrics for numerical data"""
+    if not data:
+        return json.dumps({"error": "No data provided"})
+    
+    metrics = {
+        "mean": sum(data) / len(data),
+        "median": sorted(data)[len(data) // 2],
+        "min": min(data),
+        "max": max(data),
+        "count": len(data)
+    }
+    return json.dumps(metrics)
+
+class ToolUseState(TypedDict):
+    user_query: str
+    selected_tools: List[str]
+    tool_results: Dict[str, Any]
+    integrated_response: str
+
+def tool_selection_agent(state: ToolUseState) -> ToolUseState:
+    """Analyze query and select appropriate tools"""
+    query = state["user_query"].lower()
+    selected_tools = []
+    
+    if any(word in query for word in ["weather", "temperature", "forecast"]):
+        selected_tools.append("get_weather")
+    
+    if any(word in query for word in ["news", "articles", "headlines"]):
+        selected_tools.append("search_news")
+    
+    if any(word in query for word in ["calculate", "metrics", "statistics"]):
+        selected_tools.append("calculate_metrics")
+    
+    return {**state, "selected_tools": selected_tools}
+
+def tool_execution_agent(state: ToolUseState) -> ToolUseState:
+    """Execute selected tools with validation"""
+    tool_manager = ToolManager()
+    results = {}
+    
+    for tool_name in state["selected_tools"]:
+        # Extract parameters from query (simplified)
+        if tool_name == "get_weather":
+            location = extract_location(state["user_query"]) or "New York"
+            if tool_manager.validate_tool_call(tool_name, {"location": location}):
+                result = get_weather.run({"location": location})
+                results[tool_name] = result
+                tool_manager.log_tool_usage(tool_name, {"location": location}, result)
+        
+        elif tool_name == "search_news":
+            query = extract_search_query(state["user_query"]) or "technology"
+            if tool_manager.validate_tool_call(tool_name, {"query": query}):
+                result = search_news.run({"query": query, "max_results": 3})
+                results[tool_name] = result
+                tool_manager.log_tool_usage(tool_name, {"query": query}, result)
+    
+    return {**state, "tool_results": results}
+
+def response_integration_agent(state: ToolUseState) -> ToolUseState:
+    """Integrate tool results into coherent response"""
+    response_parts = []
+    
+    for tool_name, result in state["tool_results"].items():
+        if tool_name == "get_weather":
+            weather_data = json.loads(result)
+            response_parts.append(
+                f"Current weather: {weather_data['temperature']}°C, "
+                f"{weather_data['conditions']}"
+            )
+        
+        elif tool_name == "search_news":
+            news_data = json.loads(result)
+            headlines = [article["title"] for article in news_data]
+            response_parts.append(f"Recent news: {', '.join(headlines)}")
+    
+    integrated_response = " | ".join(response_parts)
+    return {**state, "integrated_response": integrated_response}
+
+# Helper functions
+def extract_location(query: str) -> str:
+    # Simplified location extraction
+    cities = ["New York", "London", "Tokyo", "Paris", "Sydney"]
+    for city in cities:
+        if city.lower() in query.lower():
+            return city
+    return "New York"
+
+def extract_search_query(query: str) -> str:
+    # Simplified search query extraction
+    keywords = ["AI", "technology", "climate", "economy", "health"]
+    for keyword in keywords:
+        if keyword.lower() in query.lower():
+            return keyword
+    return "technology"
+                    </code></pre>
+                </section>
+            </section>
+
+            <!-- Pattern 6: Learning -->
+            <section>
+                <section>
+                    <h2>Pattern 6: Learning & Adaptation</h2>
+                    <div class="pattern-section">
+                        <h3>Autonomous Evolution</h3>
+                        <p>Continuous adaptation and self-improvement through experience and feedback</p>
+                    </div>
+                    <div class="flow-diagram">
+                        <p>Experience → Memory → Pattern Analysis → Evolution → Improved Performance</p>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Learning Components</h4>
+                            <ul class="small-text">
+                                <li>Experience archival</li>
+                                <li>Pattern recognition</li>
+                                <li>Performance metrics</li>
+                                <li>Adaptive strategies</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Evolution Capabilities</h4>
+                            <ul class="small-text">
+                                <li>Code self-modification</li>
+                                <li>Strategy optimization</li>
+                                <li>Knowledge base expansion</li>
+                                <li>Performance improvement</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Self-Improving Learning Engine</h3>
+                    <div class="code-title">Experience-Based Continuous Improvement</div>
+                    <pre><code class="python">
+import time
+from typing import Dict, List, Any
+from dataclasses import dataclass
+
+@dataclass
+class InteractionRecord:
+    timestamp: float
+    user_input: str
+    intent: str
+    patterns_used: List[str]
+    execution_time: float
+    quality_score: float
+    user_satisfaction: float
+    context: Dict[str, Any]
+
+class LearningEngine:
+    """Manages learning and adaptation across all patterns"""
+    
+    def __init__(self):
+        self.interaction_history: List[InteractionRecord] = []
+        self.pattern_performance = {}
+        self.adaptation_strategies = {}
+        self.knowledge_base = {}
+        self.improvement_triggers = {
+            "quality_decline": 0.7,    # Quality below 70%
+            "performance_stagnation": 10,  # No improvement in 10 interactions
+            "pattern_failure_rate": 0.3   # Pattern fails 30% of time
+        }
+    
+    def learn_from_interaction(self, interaction: InteractionRecord):
+        """Learn from completed interaction"""
+        
+        # Store the interaction
+        self.interaction_history.append(interaction)
+        
+        # Update pattern performance metrics
+        for pattern in interaction.patterns_used:
+            if pattern not in self.pattern_performance:
+                self.pattern_performance[pattern] = {
+                    "total_uses": 0,
+                    "success_count": 0,
+                    "avg_quality": 0.0,
+                    "avg_execution_time": 0.0,
+                    "improvement_trend": []
+                }
+            
+            perf = self.pattern_performance[pattern]
+            perf["total_uses"] += 1
+            
+            if interaction.quality_score > 0.7:
+                perf["success_count"] += 1
+            
+            # Update running averages
+            perf["avg_quality"] = self._update_running_average(
+                perf["avg_quality"], interaction.quality_score, perf["total_uses"]
+            )
+            perf["avg_execution_time"] = self._update_running_average(
+                perf["avg_execution_time"], interaction.execution_time, perf["total_uses"]
+            )
+            
+            perf["improvement_trend"].append(interaction.quality_score)
+            if len(perf["improvement_trend"]) > 20:
+                perf["improvement_trend"] = perf["improvement_trend"][-20:]
+        
+        # Check for adaptation triggers
+        self._check_adaptation_triggers()
+        
+        return self._generate_learning_insights()
+    
+    def get_pattern_recommendations(self, user_input: str, context: Dict[str, Any]) -> List[str]:
+        """Recommend optimal patterns based on learned experience"""
+        
+        # Find similar past interactions
+        similar_interactions = self._find_similar_interactions(user_input, context)
+        
+        if not similar_interactions:
+            return ["chaining", "tool_use"]  # Default patterns
+        
+        # Analyze successful pattern combinations
+        successful_patterns = []
+        for interaction in similar_interactions:
+            if interaction.quality_score > 0.8:
+                successful_patterns.extend(interaction.patterns_used)
+        
+        # Return most successful patterns
+        pattern_counts = {}
+        for pattern in successful_patterns:
+            pattern_counts[pattern] = pattern_counts.get(pattern, 0) + 1
+        
+        recommended = sorted(pattern_counts.items(), key=lambda x: x[1], reverse=True)
+        return [pattern for pattern, count in recommended[:4]]
+    
+    def get_performance_insights(self) -> Dict[str, Any]:
+        """Get comprehensive performance insights"""
+        
+        if not self.interaction_history:
+            return {"status": "no_data"}
+        
+        recent_interactions = self.interaction_history[-50:]  # Last 50 interactions
+        
+        insights = {
+            "overall_quality_trend": self._calculate_trend([i.quality_score for i in recent_interactions]),
+            "average_execution_time": sum(i.execution_time for i in recent_interactions) / len(recent_interactions),
+            "pattern_rankings": self._rank_patterns_by_performance(),
+            "improvement_opportunities": self._identify_improvement_opportunities(),
+            "adaptation_suggestions": self._generate_adaptation_suggestions()
+        }
+        
+        return insights
+    
+    def _find_similar_interactions(self, user_input: str, context: Dict[str, Any]) -> List[InteractionRecord]:
+        """Find historically similar interactions for pattern recommendation"""
+        
+        similar = []
+        user_input_words = set(user_input.lower().split())
+        
+        for interaction in self.interaction_history[-100:]:  # Recent history
+            interaction_words = set(interaction.user_input.lower().split())
+            similarity = len(user_input_words & interaction_words) / len(user_input_words | interaction_words)
+            
+            if similarity > 0.3:  # 30% word overlap threshold
+                similar.append(interaction)
+        
+        return sorted(similar, key=lambda x: x.quality_score, reverse=True)[:10]
+    
+    def _check_adaptation_triggers(self):
+        """Check if system should adapt based on performance patterns"""
+        
+        if len(self.interaction_history) < 10:
+            return  # Need sufficient data
+        
+        recent_quality = [i.quality_score for i in self.interaction_history[-10:]]
+        avg_recent_quality = sum(recent_quality) / len(recent_quality)
+        
+        # Quality decline trigger
+        if avg_recent_quality < self.improvement_triggers["quality_decline"]:
+            self._trigger_adaptation("quality_decline", {
+                "recent_avg": avg_recent_quality,
+                "threshold": self.improvement_triggers["quality_decline"]
+            })
+        
+        # Performance stagnation trigger
+        if len(recent_quality) >= 10:
+            trend = self._calculate_trend(recent_quality)
+            if abs(trend) < 0.01:  # Very flat trend
+                self._trigger_adaptation("performance_stagnation", {
+                    "trend": trend,
+                    "period": len(recent_quality)
+                })
+    
+    def _trigger_adaptation(self, trigger_type: str, details: Dict[str, Any]):
+        """Trigger specific adaptation strategy"""
+        
+        if trigger_type == "quality_decline":
+            # Implement quality improvement strategies
+            self._implement_quality_improvements()
+        
+        elif trigger_type == "performance_stagnation":
+            # Implement performance optimization strategies
+            self._implement_performance_optimizations()
+    
+    def _implement_quality_improvements(self):
+        """Implement strategies to improve output quality"""
+        
+        # Analyze which patterns are underperforming
+        underperforming_patterns = []
+        for pattern, perf in self.pattern_performance.items():
+            if perf["avg_quality"] < 0.7:
+                underperforming_patterns.append(pattern)
+        
+        # Add reflection pattern if not consistently used
+        if "reflection" not in [p for interaction in self.interaction_history[-10:] 
+                              for p in interaction.patterns_used]:
+            self.adaptation_strategies["add_reflection"] = True
+    
+    def _implement_performance_optimizations(self):
+        """Implement strategies to optimize execution performance"""
+        
+        # Identify slow patterns
+        slow_patterns = []
+        for pattern, perf in self.pattern_performance.items():
+            if perf["avg_execution_time"] > 5.0:  # Slower than 5 seconds
+                slow_patterns.append(pattern)
+        
+        # Suggest parallelization for slow operations
+        if slow_patterns:
+            self.adaptation_strategies["parallelize_slow_patterns"] = slow_patterns
+    
+    def _update_running_average(self, current_avg: float, new_value: float, count: int) -> float:
+        """Update running average with new value"""
+        return (current_avg * (count - 1) + new_value) / count
+    
+    def _calculate_trend(self, values: List[float]) -> float:
+        """Calculate trend direction of values"""
+        if len(values) < 2:
+            return 0.0
+        
+        differences = [values[i] - values[i-1] for i in range(1, len(values))]
+        return sum(differences) / len(differences)
+    
+    def _rank_patterns_by_performance(self) -> List[Dict[str, Any]]:
+        """Rank patterns by overall performance"""
+        
+        rankings = []
+        for pattern, perf in self.pattern_performance.items():
+            success_rate = perf["success_count"] / perf["total_uses"] if perf["total_uses"] > 0 else 0
+            rankings.append({
+                "pattern": pattern,
+                "success_rate": success_rate,
+                "avg_quality": perf["avg_quality"],
+                "avg_execution_time": perf["avg_execution_time"],
+                "total_uses": perf["total_uses"]
+            })
+        
+        return sorted(rankings, key=lambda x: (x["success_rate"], x["avg_quality"]), reverse=True)
+    
+    def _identify_improvement_opportunities(self) -> List[str]:
+        """Identify specific areas for improvement"""
+        
+        opportunities = []
+        
+        # Check for unused beneficial patterns
+        all_patterns = {"chaining", "routing", "parallelization", "reflection", "tool_use", "learning"}
+        used_patterns = set()
+        for interaction in self.interaction_history[-20:]:
+            used_patterns.update(interaction.patterns_used)
+        
+        unused_patterns = all_patterns - used_patterns
+        if unused_patterns:
+            opportunities.append(f"Consider using: {', '.join(unused_patterns)}")
+        
+        # Check for quality consistency issues
+        recent_quality = [i.quality_score for i in self.interaction_history[-20:]]
+        if recent_quality:
+            quality_std = self._calculate_std_dev(recent_quality)
+            if quality_std > 0.2:  # High variance
+                opportunities.append("Improve quality consistency")
+        
+        return opportunities
+    
+    def _generate_adaptation_suggestions(self) -> List[str]:
+        """Generate specific adaptation suggestions"""
+        
+        suggestions = []
+        
+        # Performance-based suggestions
+        if self.pattern_performance:
+            best_pattern = max(self.pattern_performance.items(), 
+                             key=lambda x: x[1]["avg_quality"])
+            suggestions.append(f"Increase usage of high-performing pattern: {best_pattern[0]}")
+        
+        # Context-based suggestions
+        if len(self.interaction_history) > 50:
+            recent_trends = self._analyze_recent_trends()
+            suggestions.extend(recent_trends)
+        
+        return suggestions
+    
+    def _calculate_std_dev(self, values: List[float]) -> float:
+        """Calculate standard deviation"""
+        if not values:
+            return 0.0
+        
+        mean = sum(values) / len(values)
+        variance = sum((x - mean) ** 2 for x in values) / len(values)
+        return variance ** 0.5
+    
+    def _analyze_recent_trends(self) -> List[str]:
+        """Analyze recent performance trends"""
+        
+        trends = []
+        recent = self.interaction_history[-20:]
+        
+        # Quality trend
+        quality_values = [i.quality_score for i in recent]
+        quality_trend = self._calculate_trend(quality_values)
+        
+        if quality_trend < -0.05:
+            trends.append("Quality is declining - consider adding reflection pattern")
+        elif quality_trend > 0.05:
+            trends.append("Quality is improving - maintain current strategy")
+        
+        # Execution time trend
+        time_values = [i.execution_time for i in recent]
+        time_trend = self._calculate_trend(time_values)
+        
+        if time_trend > 0.5:
+            trends.append("Execution time increasing - consider parallelization")
+        
+        return trends
+    
+    def _generate_learning_insights(self) -> Dict[str, Any]:
+        """Generate insights from latest learning cycle"""
+        
+        if len(self.interaction_history) < 5:
+            return {"status": "insufficient_data"}
+        
+        latest = self.interaction_history[-1]
+        recent_avg = sum(i.quality_score for i in self.interaction_history[-5:]) / 5
+        
+        return {
+            "latest_quality": latest.quality_score,
+            "recent_average": recent_avg,
+            "pattern_effectiveness": {
+                pattern: self.pattern_performance[pattern]["avg_quality"]
+                for pattern in latest.patterns_used
+                if pattern in self.pattern_performance
+            },
+            "improvement_suggestions": self._generate_adaptation_suggestions()[:3]
+        }
+                    </code></pre>
+                </section>
+            </section>
+
+            <!-- Pattern 7: Human-in-the-Loop -->
+            <section>
+                <section>
+                    <h2>Pattern 7: Human-in-the-Loop</h2>
+                    <div class="pattern-section">
+                        <h3>AI-Human Collaboration</h3>
+                        <p>Strategic human involvement for optimal decision-making and oversight</p>
+                    </div>
+                    <div class="flow-diagram">
+                        <p>AI Analysis → Confidence Check → [Autonomous | Human Escalation] → Validated Response</p>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Escalation Triggers</h4>
+                            <ul class="small-text">
+                                <li>Low confidence scores</li>
+                                <li>High-stakes decisions</li>
+                                <li>Regulatory requirements</li>
+                                <li>User frustration detection</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Human Expertise Areas</h4>
+                            <ul class="small-text">
+                                <li>Complex ethical decisions</li>
+                                <li>Creative problem solving</li>
+                                <li>Emotional intelligence</li>
+                                <li>Domain-specific knowledge</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Human Escalation Framework</h3>
+                    <div class="code-title">Intelligent Human-AI Collaboration</div>
+                    <pre><code class="python">
+from enum import Enum
+from dataclasses import dataclass
+from typing import Optional, Dict, Any, List
+
+class EscalationLevel(Enum):
+    NONE = "none"
+    ADVISORY = "advisory"  # Human provides input, AI decides
+    COLLABORATIVE = "collaborative"  # Joint decision making
+    HUMAN_CONTROL = "human_control"  # Human makes final decision
+
+@dataclass
+class EscalationRequest:
+    request_id: str
+    user_query: str
+    ai_response: str
+    confidence_score: float
+    risk_level: str
+    domain: str
+    escalation_reason: str
+    suggested_experts: List[str]
+    context: Dict[str, Any]
+
+class HumanInTheLoopManager:
+    """Manages human escalation and collaboration patterns"""
+    
+    def __init__(self):
+        self.escalation_rules = {
+            "confidence_threshold": 0.75,
+            "high_stakes_domains": ["medical", "legal", "financial", "safety"],
+            "sensitive_topics": ["personal_data", "privacy", "discrimination"],
+            "escalation_timeouts": {
+                "advisory": 300,      # 5 minutes
+                "collaborative": 600, # 10 minutes
+                "human_control": 1800 # 30 minutes
+            }
+        }
+        
+        self.expert_registry = {
+            "medical": ["dr_smith", "nurse_johnson"],
+            "legal": ["lawyer_brown", "paralegal_davis"],
+            "financial": ["advisor_wilson", "analyst_taylor"],
+            "technical": ["engineer_chen", "architect_kumar"]
+        }
+        
+        self.active_escalations = {}
+    
+    async def should_escalate(self, 
+                            request: str, 
+                            ai_response: str, 
+                            confidence: float,
+                            context: Dict[str, Any]) -> Optional[EscalationRequest]:
+        """Determine if human escalation is needed"""
+        
+        escalation_reasons = []
+        domain = self._classify_domain(request)
+        risk_level = self._assess_risk_level(request, domain, context)
+        
+        # Low confidence check
+        if confidence < self.escalation_rules["confidence_threshold"]:
+            escalation_reasons.append(f"Low confidence: {confidence:.2f}")
+        
+        # High stakes domain check
+        if domain in self.escalation_rules["high_stakes_domains"]:
+            escalation_reasons.append(f"High-stakes domain: {domain}")
+        
+        # Sensitive topic check
+        if self._contains_sensitive_topics(request):
+            escalation_reasons.append("Contains sensitive topics")
+        
+        # Risk level check
+        if risk_level in ["high", "critical"]:
+            escalation_reasons.append(f"Risk level: {risk_level}")
+        
+        # User frustration detection
+        if context.get("user_frustration_score", 0) > 0.7:
+            escalation_reasons.append("User frustration detected")
+        
+        # Regulatory compliance check
+        if self._requires_human_oversight(domain, context):
+            escalation_reasons.append("Regulatory compliance requirement")
+        
+        if escalation_reasons:
+            return EscalationRequest(
+                request_id=self._generate_request_id(),
+                user_query=request,
+                ai_response=ai_response,
+                confidence_score=confidence,
+                risk_level=risk_level,
+                domain=domain,
+                escalation_reason="; ".join(escalation_reasons),
+                suggested_experts=self.expert_registry.get(domain, []),
+                context=context
+            )
+        
+        return None
+    
+    async def escalate_to_human(self, 
+                              escalation_request: EscalationRequest) -> Dict[str, Any]:
+        """Handle human escalation process"""
+        
+        escalation_level = self._determine_escalation_level(escalation_request)
+        
+        # Create escalation ticket
+        ticket = {
+            "id": escalation_request.request_id,
+            "level": escalation_level.value,
+            "priority": self._calculate_priority(escalation_request),
+            "assigned_experts": self._assign_experts(escalation_request),
+            "ai_context": {
+                "original_response": escalation_request.ai_response,
+                "confidence": escalation_request.confidence_score,
+                "reasoning": escalation_request.escalation_reason
+            },
+            "user_context": escalation_request.context,
+            "created_at": time.time()
+        }
+        
+        # Store active escalation
+        self.active_escalations[escalation_request.request_id] = ticket
+        
+        # Route to appropriate experts
+        expert_response = await self._route_to_experts(ticket)
+        
+        # Process based on escalation level
+        if escalation_level == EscalationLevel.ADVISORY:
+            return await self._handle_advisory_escalation(ticket, expert_response)
+        elif escalation_level == EscalationLevel.COLLABORATIVE:
+            return await self._handle_collaborative_escalation(ticket, expert_response)
+        elif escalation_level == EscalationLevel.HUMAN_CONTROL:
+            return await self._handle_human_control_escalation(ticket, expert_response)
+    
+    def _classify_domain(self, request: str) -> str:
+        """Classify the domain of the request"""
+        request_lower = request.lower()
+        
+        medical_keywords = ["health", "medical", "diagnosis", "symptoms", "treatment"]
+        legal_keywords = ["legal", "law", "contract", "rights", "liability"]
+        financial_keywords = ["investment", "financial", "money", "budget", "loan"]
+        
+        if any(keyword in request_lower for keyword in medical_keywords):
+            return "medical"
+        elif any(keyword in request_lower for keyword in legal_keywords):
+            return "legal"
+        elif any(keyword in request_lower for keyword in financial_keywords):
+            return "financial"
+        else:
+            return "general"
+    
+    def _assess_risk_level(self, request: str, domain: str, context: Dict[str, Any]) -> str:
+        """Assess the risk level of the request"""
+        
+        risk_indicators = {
+            "critical": ["emergency", "urgent", "life-threatening", "immediate"],
+            "high": ["important", "significant", "substantial", "major"],
+            "medium": ["moderate", "considerable", "notable"],
+            "low": ["minor", "small", "slight"]
+        }
+        
+        request_lower = request.lower()
+        
+        for level, indicators in risk_indicators.items():
+            if any(indicator in request_lower for indicator in indicators):
+                return level
+        
+        # Domain-based risk assessment
+        if domain in ["medical", "legal", "safety"]:
+            return "high"
+        elif domain == "financial":
+            return "medium"
+        else:
+            return "low"
+    
+    def _contains_sensitive_topics(self, request: str) -> bool:
+        """Check if request contains sensitive topics"""
+        sensitive_keywords = [
+            "personal data", "privacy", "discrimination", "bias",
+            "confidential", "classified", "restricted"
+        ]
+        
+        request_lower = request.lower()
+        return any(keyword in request_lower for keyword in sensitive_keywords)
+    
+    def _requires_human_oversight(self, domain: str, context: Dict[str, Any]) -> bool:
+        """Check if regulatory compliance requires human oversight"""
+        
+        regulatory_domains = {
+            "medical": ["HIPAA", "FDA"],
+            "financial": ["SEC", "FINRA", "SOX"],
+            "legal": ["BAR", "ABA"]
+        }
+        
+        if domain in regulatory_domains:
+            # Check if context indicates regulatory scope
+            regulations = context.get("applicable_regulations", [])
+            return any(reg in regulatory_domains[domain] for reg in regulations)
+        
+        return False
+    
+    def _determine_escalation_level(self, request: EscalationRequest) -> EscalationLevel:
+        """Determine appropriate escalation level"""
+        
+        if request.risk_level == "critical":
+            return EscalationLevel.HUMAN_CONTROL
+        elif request.risk_level == "high" or request.confidence_score < 0.5:
+            return EscalationLevel.COLLABORATIVE
+        else:
+            return EscalationLevel.ADVISORY
+    
+    def _calculate_priority(self, request: EscalationRequest) -> str:
+        """Calculate priority for escalation ticket"""
+        
+        if request.risk_level == "critical":
+            return "immediate"
+        elif request.risk_level == "high":
+            return "urgent"
+        elif request.confidence_score < 0.5:
+            return "high"
+        else:
+            return "normal"
+    
+    def _assign_experts(self, request: EscalationRequest) -> List[str]:
+        """Assign appropriate experts to the escalation"""
+        
+        domain_experts = self.expert_registry.get(request.domain, [])
+        
+        # For high-risk situations, assign multiple experts
+        if request.risk_level in ["high", "critical"]:
+            return domain_experts[:2] if len(domain_experts) >= 2 else domain_experts
+        else:
+            return domain_experts[:1] if domain_experts else ["general_expert"]
+    
+    async def _route_to_experts(self, ticket: Dict[str, Any]) -> Dict[str, Any]:
+        """Route escalation to assigned experts"""
+        
+        # Simulate expert notification and response gathering
+        expert_responses = {}
+        
+        for expert in ticket["assigned_experts"]:
+            # In real implementation, this would send notifications
+            # and wait for expert responses
+            expert_responses[expert] = {
+                "recommendation": f"Expert {expert} recommendation for ticket {ticket['id']}",
+                "confidence": 0.9,
+                "reasoning": f"Based on {expert}'s expertise in {ticket.get('domain', 'general')}",
+                "response_time": time.time()
+            }
+        
+        return expert_responses
+    
+    async def _handle_advisory_escalation(self, 
+                                        ticket: Dict[str, Any], 
+                                        expert_response: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle advisory level escalation - experts provide input, AI decides"""
+        
+        # Combine AI analysis with expert advice
+        expert_insights = []
+        for expert, response in expert_response.items():
+            expert_insights.append(response["recommendation"])
+        
+        # AI makes final decision incorporating expert advice
+        final_response = self._synthesize_ai_expert_response(
+            ticket["ai_context"]["original_response"],
+            expert_insights
+        )
+        
+        return {
+            "response": final_response,
+            "decision_maker": "ai_with_expert_input",
+            "expert_advice": expert_insights,
+            "confidence": min(0.9, ticket["ai_context"]["confidence"] + 0.2)
+        }
+    
+    async def _handle_collaborative_escalation(self, 
+                                             ticket: Dict[str, Any], 
+                                             expert_response: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle collaborative escalation - joint AI-human decision making"""
+        
+        # Present both AI and expert perspectives for collaborative decision
+        collaborative_analysis = {
+            "ai_perspective": {
+                "response": ticket["ai_context"]["original_response"],
+                "confidence": ticket["ai_context"]["confidence"],
+                "reasoning": ticket["ai_context"]["reasoning"]
+            },
+            "expert_perspectives": expert_response,
+            "synthesis_required": True
+        }
+        
+        # In real implementation, this would involve human expert review
+        final_decision = self._facilitate_collaborative_decision(collaborative_analysis)
+        
+        return {
+            "response": final_decision["response"],
+            "decision_maker": "collaborative",
+            "collaboration_details": collaborative_analysis,
+            "confidence": final_decision["confidence"]
+        }
+    
+    async def _handle_human_control_escalation(self, 
+                                             ticket: Dict[str, Any], 
+                                             expert_response: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle human control escalation - human makes final decision"""
+        
+        # Human expert takes full control
+        human_decision = await self._wait_for_human_decision(ticket, expert_response)
+        
+        return {
+            "response": human_decision["response"],
+            "decision_maker": "human_expert",
+            "expert_decision": human_decision,
+            "ai_input": ticket["ai_context"]["original_response"],
+            "confidence": human_decision.get("confidence", 0.95)
+        }
+    
+    def _synthesize_ai_expert_response(self, ai_response: str, expert_insights: List[str]) -> str:
+        """Synthesize AI response with expert insights"""
+        
+        synthesis = f"""
+        AI Analysis: {ai_response}
+        
+        Expert Insights: {'; '.join(expert_insights)}
+        
+        Synthesized Response: Taking into account expert recommendations, 
+        the refined approach incorporates both analytical AI capabilities 
+        and human domain expertise for optimal outcomes.
+        """
+        
+        return synthesis.strip()
+    
+    def _facilitate_collaborative_decision(self, analysis: Dict[str, Any]) -> Dict[str, Any]:
+        """Facilitate collaborative decision making"""
+        
+        # Simulate collaborative decision process
+        return {
+            "response": "Collaborative decision incorporating both AI analysis and expert judgment",
+            "confidence": 0.88,
+            "decision_factors": ["ai_analysis", "expert_domain_knowledge", "risk_assessment"]
+        }
+    
+    async def _wait_for_human_decision(self, 
+                                     ticket: Dict[str, Any], 
+                                     expert_response: Dict[str, Any]) -> Dict[str, Any]:
+        """Wait for human expert decision"""
+        
+        # Simulate human expert decision making process
+        return {
+            "response": "Human expert decision based on comprehensive analysis",
+            "confidence": 0.95,
+            "decision_time": time.time(),
+            "expert_id": ticket["assigned_experts"][0] if ticket["assigned_experts"] else "general_expert"
+        }
+    
+    def _generate_request_id(self) -> str:
+        """Generate unique request ID"""
+        return f"escalation_{int(time.time())}_{hash(time.time()) % 10000}"
+                    </code></pre>
+                </section>
+            </section>
+
+            <!-- Pattern Integration -->
+            <section>
+                <h2>Pattern Synergies & Anti-Patterns</h2>
+                <div class="vs-comparison">
+                    <div>
+                        <h4>Powerful Combinations</h4>
+                        <ul class="small-text numbered-list">
+                            <li><span class="highlight">Chaining + Reflection</span><br>Sequential steps with quality improvement loops</li>
+                            <li><span class="highlight">Routing + A2A Communication</span><br>Cross-framework agent delegation and coordination</li>
+                            <li><span class="highlight">Parallelization + A2A</span><br>Distributed processing across multiple agent frameworks</li>
+                            <li><span class="highlight">Learning + A2A</span><br>Shared knowledge and collaborative improvement</li>
+                            <li><span class="highlight">Human-in-Loop + All Patterns</span><br>Human oversight across all operations</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Anti-Patterns to Avoid</h4>
+                        <ul class="small-text numbered-list">
+                            <li><span class="highlight">Over-chaining</span><br>Too many sequential steps create fragility</li>
+                            <li><span class="highlight">A2A Chatty Networks</span><br>Excessive inter-agent communication overhead</li>
+                            <li><span class="highlight">Premature Parallelization</span><br>Parallelizing dependent tasks</li>
+                            <li><span class="highlight">Infinite Reflection</span><br>No stopping criteria for improvement loops</li>
+                            <li><span class="highlight">Tool Sprawl</span><br>Too many unnecessary external dependencies</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Complete System Architecture -->
+            <section>
+                <h2>Ultimate System Architecture</h2>
+                <div class="emphasis-box">
+                    <h3>All Patterns Working in Harmony</h3>
+                    <p class="small-text">User Request → Intelligent Router → Parallel Execution → Sequential Synthesis → Quality Reflection → Learning Update → Human Oversight → Optimized Response</p>
+                </div>
+                <div class="pattern-section">
+                    <h4>System Flow</h4>
+                    <ol class="small-text numbered-list">
+                        <li><span class="highlight">Routing</span> analyzes intent and selects optimal execution path</li>
+                        <li><span class="highlight">Parallelization</span> executes independent data gathering tasks</li>
+                        <li><span class="highlight">Chaining</span> processes information through structured steps</li>
+                        <li><span class="highlight">Tool Use</span> integrates real-world data and capabilities</li>
+                        <li><span class="highlight">Reflection</span> ensures quality through iterative improvement</li>
+                        <li><span class="highlight">Learning</span> captures experience for future optimization</li>
+                        <li><span class="highlight">Human-in-Loop</span> provides oversight for critical decisions</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Implementation Framework -->
+            <section>
+                <h2>Complete Implementation Framework</h2>
+                <div class="code-title">Ultimate Agentic System Integration</div>
+                <pre><code class="python">
+class UltimateAgentSystem:
+    """Complete system integrating all seven agentic patterns"""
+    
+    def __init__(self):
+        # Initialize all pattern components
+        self.router = IntelligentRouter()
+        self.parallel_executor = ParallelExecutor()
+        self.chain_manager = ChainManager()
+        self.tool_manager = ToolManager()
+        self.reflection_engine = ReflectionEngine()
+        self.learning_engine = LearningEngine()
+        self.human_escalation = HumanInTheLoopManager()
+        
+        # System configuration
+        self.config = {
+            "quality_threshold": 0.8,
+            "max_reflection_iterations": 3,
+            "escalation_confidence_threshold": 0.75,
+            "parallel_timeout": 30.0,
+            "learning_enabled": True
+        }
+    
+    async def process_request(self, user_input: str, context: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Process user request through complete agentic framework"""
+        
+        start_time = time.time()
+        execution_log = []
+        
+        try:
+            # Phase 1: Intelligent Routing with Learning
+            routing_result = await self._intelligent_routing_phase(user_input, context)
+            execution_log.append(("routing", routing_result))
+            
+            # Phase 2: Parallel Data Gathering
+            if routing_result.get("requires_parallel_execution", False):
+                parallel_result = await self._parallel_execution_phase(user_input, routing_result)
+                execution_log.append(("parallelization", parallel_result))
+            else:
+                parallel_result = {"skipped": True}
+            
+            # Phase 3: Sequential Processing Chain
+            chain_result = await self._sequential_processing_phase(
+                user_input, routing_result, parallel_result
+            )
+            execution_log.append(("chaining", chain_result))
+            
+            # Phase 4: Tool Integration
+            if routing_result.get("requires_tools", False):
+                tool_result = await self._tool_integration_phase(user_input, chain_result)
+                execution_log.append(("tool_use", tool_result))
+                chain_result.update(tool_result)
+            
+            # Phase 5: Quality Reflection
+            reflection_result = await self._quality_reflection_phase(chain_result)
+            execution_log.append(("reflection", reflection_result))
+            
+            # Phase 6: Human Escalation Check
+            escalation_result = await self._human_escalation_phase(
+                user_input, reflection_result, context or {}
+            )
+            execution_log.append(("human_in_loop", escalation_result))
+            
+            # Phase 7: Learning and Adaptation
+            if self.config["learning_enabled"]:
+                learning_result = await self._learning_phase(
+                    user_input, execution_log, reflection_result
+                )
+                execution_log.append(("learning", learning_result))
+            
+            # Compile final response
+            final_response = self._compile_final_response(
+                reflection_result, escalation_result, execution_log
+            )
+            
+            final_response.update({
+                "execution_time": time.time() - start_time,
+                "patterns_used": [pattern for pattern, _ in execution_log if not _.get("skipped")],
+                "execution_log": execution_log
+            })
+            
+            return final_response
+            
+        except Exception as e:
+            return self._handle_system_error(e, execution_log)
+    
+    async def _intelligent_routing_phase(self, user_input: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        """Phase 1: Intelligent routing with learned preferences"""
+        
+        # Get learned routing preferences
+        learned_preferences = self.learning_engine.get_pattern_recommendations(user_input, context or {})
+        
+        # Classify intent and determine execution strategy
+        routing_analysis = self.router.analyze_request(user_input, learned_preferences)
+        
+        return {
+            "intent": routing_analysis["intent"],
+            "confidence": routing_analysis["confidence"],
+            "execution_strategy": routing_analysis["strategy"],
+            "requires_parallel_execution": routing_analysis.get("parallel_beneficial", False),
+            "requires_tools": routing_analysis.get("tools_needed", False),
+            "recommended_patterns": learned_preferences,
+            "estimated_complexity": routing_analysis.get("complexity", "medium")
+        }
+    
+    async def _parallel_execution_phase(self, user_input: str, routing_result: Dict[str, Any]) -> Dict[str, Any]:
+        """Phase 2: Parallel data gathering and processing"""
+        
+        # Determine parallel tasks based on intent
+        parallel_tasks = self._identify_parallel_tasks(user_input, routing_result)
+        
+        if not parallel_tasks:
+            return {"skipped": True, "reason": "no_parallel_tasks_identified"}
+        
+        # Execute tasks in parallel with timeout
+        try:
+            task_results = await asyncio.wait_for(
+                self.parallel_executor.execute_tasks(parallel_tasks),
+                timeout=self.config["parallel_timeout"]
+            )
+            
+            return {
+                "task_results": task_results,
+                "execution_time": task_results.get("total_time", 0),
+                "tasks_completed": len([r for r in task_results.values() if r.get("success")])
+            }
+            
+        except asyncio.TimeoutError:
+            return {"error": "parallel_execution_timeout", "partial_results": {}}
+    
+    async def _sequential_processing_phase(self, 
+                                         user_input: str, 
+                                         routing_result: Dict[str, Any], 
+                                         parallel_result: Dict[str, Any]) -> Dict[str, Any]:
+        """Phase 3: Sequential processing chain"""
+        
+        # Build processing chain based on intent and available data
+        processing_steps = self._build_processing_chain(routing_result, parallel_result)
+        
+        chain_state = {
+            "user_input": user_input,
+            "routing_context": routing_result,
+            "parallel_data": parallel_result.get("task_results", {}),
+            "current_step": 0,
+            "intermediate_results": []
+        }
+        
+        # Execute processing chain
+        for step_name, step_function in processing_steps:
+            try:
+                step_result = await step_function(chain_state)
+                chain_state["intermediate_results"].append({
+                    "step": step_name,
+                    "result": step_result,
+                    "timestamp": time.time()
+                })
+                chain_state.update(step_result)
+                chain_state["current_step"] += 1
+                
+            except Exception as e:
+                chain_state["intermediate_results"].append({
+                    "step": step_name,
+                    "error": str(e),
+                    "timestamp": time.time()
+                })
+                break
+        
+        return chain_state
+    
+    async def _tool_integration_phase(self, user_input: str, chain_result: Dict[str, Any]) -> Dict[str, Any]:
+        """Phase 4: External tool integration"""
+        
+        # Identify required tools based on chain results
+        required_tools = self._identify_required_tools(user_input, chain_result)
+        
+        if not required_tools:
+            return {"skipped": True, "reason": "no_tools_required"}
+        
+        # Execute tools with security validation
+        tool_results = {}
+        for tool_name in required_tools:
+            try:
+                tool_output = await self.tool_manager.execute_tool_safely(
+                    tool_name, user_input, chain_result
+                )
+                tool_results[tool_name] = tool_output
+                
+            except Exception as e:
+                tool_results[tool_name] = {"error": str(e)}
+        
+        return {
+            "tool_results": tool_results,
+            "tools_executed": list(required_tools),
+            "integration_successful": len([r for r in tool_results.values() if not r.get("error")])
+        }
+    
+    async def _quality_reflection_phase(self, processing_result: Dict[str, Any]) -> Dict[str, Any]:
+        """Phase 5: Quality reflection and improvement"""
+        
+        current_output = processing_result.get("final_output", "No output generated")
+        iteration_count = 0
+        
+        while iteration_count < self.config["max_reflection_iterations"]:
+            # Evaluate current quality
+            quality_assessment = self.reflection_engine.evaluate_quality(current_output)
+            
+            if quality_assessment["score"] >= self.config["quality_threshold"]:
+                break  # Quality threshold met
+            
+            # Generate improvement suggestions
+            improvements = self.reflection_engine.suggest_improvements(
+                current_output, quality_assessment
+            )
+            
+            # Apply improvements
+            improved_output = await self.reflection_engine.apply_improvements(
+                current_output, improvements
+            )
+            
+            current_output = improved_output
+            iteration_count += 1
+        
+        return {
+            "final_output": current_output,
+            "quality_score": quality_assessment["score"],
+            "reflection_iterations": iteration_count,
+            "improvements_applied": iteration_count > 0
+        }
+    
+    async def _human_escalation_phase(self, 
+                                    user_input: str, 
+                                    reflection_result: Dict[str, Any], 
+                                    context: Dict[str, Any]) -> Dict[str, Any]:
+        """Phase 6: Human escalation evaluation"""
+        
+        # Check if human escalation is needed
+        escalation_request = await self.human_escalation.should_escalate(
+            user_input,
+            reflection_result["final_output"],
+            reflection_result["quality_score"],
+            context
+        )
+        
+        if escalation_request:
+            # Handle human escalation
+            escalation_result = await self.human_escalation.escalate_to_human(escalation_request)
+            return {
+                "escalated": True,
+                "escalation_type": escalation_result.get("decision_maker"),
+                "final_response": escalation_result["response"],
+                "confidence": escalation_result["confidence"]
+            }
+        else:
+            return {
+                "escalated": False,
+                "final_response": reflection_result["final_output"],
+                "confidence": reflection_result["quality_score"]
+            }
+    
+    async def _learning_phase(self, 
+                            user_input: str, 
+                            execution_log: List[tuple], 
+                            final_result: Dict[str, Any]) -> Dict[str, Any]:
+        """Phase 7: Learning and system adaptation"""
+        
+        # Create interaction record
+        interaction_record = InteractionRecord(
+            timestamp=time.time(),
+            user_input=user_input,
+            intent=execution_log[0][1].get("intent", "unknown"),
+            patterns_used=[pattern for pattern, result in execution_log if not result.get("skipped")],
+            execution_time=sum(result.get("execution_time", 0) for _, result in execution_log),
+            quality_score=final_result.get("quality_score", 0.5),
+            user_satisfaction=0.8,  # Would be collected from user feedback
+            context={"execution_log": execution_log}
+        )
+        
+        # Learn from interaction
+        learning_insights = self.learning_engine.learn_from_interaction(interaction_record)
+        
+        return {
+            "learning_applied": True,
+            "insights": learning_insights,
+            "performance_improvements": learning_insights.get("improvement_suggestions", [])
+        }
+    
+    def _compile_final_response(self, 
+                              reflection_result: Dict[str, Any], 
+                              escalation_result: Dict[str, Any], 
+                              execution_log: List[tuple]) -> Dict[str, Any]:
+        """Compile final system response"""
+        
+        return {
+            "response": escalation_result.get("final_response", reflection_result.get("final_output")),
+            "confidence": escalation_result.get("confidence", reflection_result.get("quality_score")),
+            "human_reviewed": escalation_result.get("escalated", False),
+            "quality_iterations": reflection_result.get("reflection_iterations", 0),
+            "system_performance": self._calculate_system_performance(execution_log)
+        }
+    
+    def _calculate_system_performance(self, execution_log: List[tuple]) -> Dict[str, Any]:
+        """Calculate overall system performance metrics"""
+        
+        total_phases = len(execution_log)
+        successful_phases = len([result for _, result in execution_log if not result.get("error")])
+        
+        return {
+            "phase_success_rate": successful_phases / total_phases if total_phases > 0 else 0,
+            "patterns_utilized": len(set(pattern for pattern, _ in execution_log)),
+            "system_efficiency": successful_phases / total_phases if total_phases > 0 else 0
+        }
+    
+    def _handle_system_error(self, error: Exception, execution_log: List[tuple]) -> Dict[str, Any]:
+        """Handle system-level errors gracefully"""
+        
+        return {
+            "error": str(error),
+            "partial_execution": execution_log,
+            "recovery_suggestions": ["retry_with_simpler_approach", "human_escalation"],
+            "system_status": "error_recovery_mode"
+        }
+
+# Usage example
+async def demonstrate_ultimate_system():
+    """Demonstrate the complete seven-pattern system"""
+    
+    system = UltimateAgentSystem()
+    
+    test_scenarios = [
+        {
+            "input": "Analyze the current AI market trends and create investment recommendations",
+            "context": {"domain": "financial", "user_risk_profile": "moderate"}
+        },
+        {
+            "input": "Help me write a Python function to optimize database queries with error handling",
+            "context": {"domain": "technical", "complexity": "high"}
+        },
+        {
+            "input": "Research renewable energy solutions and calculate ROI for solar panel installation",
+            "context": {"domain": "research", "requires_calculations": True}
+        }
+    ]
+    
+    print("=== Ultimate Agentic AI System Demonstration ===\n")
+    
+    for i, scenario in enumerate(test_scenarios, 1):
+        print(f"--- Scenario {i} ---")
+        print(f"Request: {scenario['input']}")
+        print(f"Context: {scenario['context']}")
+        
+        result = await system.process_request(scenario["input"], scenario["context"])
+        
+        print(f"Patterns Used: {' → '.join(result['patterns_used'])}")
+        print(f"Human Reviewed: {'Yes' if result['human_reviewed'] else 'No'}")
+        print(f"Quality Score: {result['confidence']:.2f}")
+        print(f"Execution Time: {result['execution_time']:.2f}s")
+        print(f"System Efficiency: {result['system_performance']['system_efficiency']:.2f}")
+        print(f"Response: {result['response'][:100]}...")
+        print()
+
+# Run demonstration
+# asyncio.run(demonstrate_ultimate_system())
+                </code></pre>
+            </section>
+
+            <!-- Production Considerations -->
+            <section>
+                <h2>Production Deployment Checklist</h2>
+                <div class="pattern-section">
+                    <h3>Critical Production Requirements</h3>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Performance & Reliability</h4>
+                            <ul class="small-text numbered-list">
+                                <li>Load balancing across system instances</li>
+                                <li>Caching for frequently used patterns</li>
+                                <li>Resource limits and monitoring</li>
+                                <li>Graceful degradation strategies</li>
+                                <li>Comprehensive error recovery</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Security & Compliance</h4>
+                            <ul class="small-text numbered-list">
+                                <li>Input validation and sanitization</li>
+                                <li>Secure tool and API access</li>
+                                <li>Audit logging and compliance</li>
+                                <li>Data privacy protection</li>
+                                <li>Human oversight integration</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="emphasis-box">
+                    <h4>Production Readiness Validation</h4>
+                    <p class="small-text">✓ All patterns tested in isolation and integration<br>
+                    ✓ Security measures implemented and verified<br>
+                    ✓ Performance benchmarks met under load<br>
+                    ✓ Human escalation workflows operational<br>
+                    ✓ Learning systems validated and monitored<br>
+                    ✓ Rollback procedures tested and documented</p>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section>
+                <h2>Framework Mastery Principles</h2>
+                <div class="pattern-grid-six" style="margin: 2em 0;">
+                    <div class="pattern-card">
+                        <h4>🔗 Chaining</h4>
+                        <p class="small-text">Break complexity into focused, manageable steps with clear state transitions</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>🧭 Routing</h4>
+                        <p class="small-text">Supervisor-based delegation with specialized agents for optimal outcomes</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>⚡ Parallelization</h4>
+                        <p class="small-text">Execute independent tasks simultaneously for maximum efficiency</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>🔄 Reflection</h4>
+                        <p class="small-text">Self-correction through iterative critique and refinement cycles</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>🛠️ Tool Use</h4>
+                        <p class="small-text">Secure, monitored access to external systems and real-time data</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>🧠 Learning</h4>
+                        <p class="small-text">Continuous adaptation and autonomous evolution through experience</p>
+                    </div>
+                </div>
+                <div class="vs-comparison" style="margin-top: 1em;">
+                    <div class="pattern-card" style="width: 100%;">
+                        <h4>👥 Human-in-the-Loop</h4>
+                        <p class="small-text">Strategic human collaboration for critical decisions and continuous oversight</p>
+                    </div>
+                    <div class="pattern-card" style="width: 100%;">
+                        <h4>🤖 A2A Communication</h4>
+                        <p class="small-text">Cross-framework agent interoperability through standardized HTTP protocol</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Closing -->
+            <section data-background-gradient="linear-gradient(45deg, #1e1e1e, #2d2d2d)">
+                <h1>Complete Agentic AI Framework</h1>
+                <div class="emphasis-box">
+                    <h2>Production-Ready Autonomous Systems</h2>
+                    <p class="small-text">Eight patterns that combine to create fully autonomous, self-improving AI agents capable of handling any real-world scenario with intelligence, efficiency, security, and continuous evolution. Now with cross-framework interoperability through A2A protocol.</p>
+                </div>
+                <div class="pattern-section">
+                    <h3>Ready for Implementation</h3>
+                    <p class="small-text">This framework provides the complete toolkit for building enterprise-grade agentic AI systems that learn, adapt, improve autonomously, and collaborate across different frameworks while maintaining human oversight and control.</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+    
+    <script>
+        // Initialize Reveal.js with optimized settings
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            
+            // Responsive configuration
+            width: 1200,
+            height: 900,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0,
+            
+            // Plugin configuration
+            plugins: [ RevealHighlight, RevealNotes ],
+            
+            // Highlight.js configuration
+            highlight: {
+                highlightOnLoad: true,
+                theme: 'github-dark'
+            },
+            
+            // Keyboard navigation
+            keyboard: {
+                39: 'next', // Right arrow
+                37: 'prev', // Left arrow
+                32: 'next'  // Spacebar
+            }
+        });
+
+        // Add custom navigation enhancements
+        Reveal.on('slidechanged', event => {
+            // Trigger animations for pattern cards
+            const cards = event.currentSlide.querySelectorAll('.pattern-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Add progress indicator
+        Reveal.on('ready', event => {
+            console.log('Agentic AI Design Patterns presentation ready');
+        });
+    </script>
+</body>
+</html>

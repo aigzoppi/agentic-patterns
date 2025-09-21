@@ -1,0 +1,3306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github-dark.css">
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <!-- Or choose a different theme like github, monokai, etc. -->
+
+<!-- Highlight.js JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #42affa;
+            --secondary-color: #ff6b6b;
+            --accent-color: #4ecdc4;
+            --background-dark: #1e1e1e;
+            --text-light: #ffffff;
+        }
+
+        .reveal {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 28px; /* Reduced from default */
+        }
+
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            color: var(--text-light);
+            text-transform: none;
+            line-height: 1.1;
+            margin: 0.3em 0;
+        }
+
+        .reveal h1 {
+            font-size: 2.2em; /* Reduced from 2.5em */
+            color: var(--primary-color);
+            margin-bottom: 0.4em;
+        }
+
+        .reveal h2 {
+            font-size: 1.4em; /* Reduced from 1.5em */
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.2em;
+            margin-bottom: 0.4em;
+        }
+
+        .reveal code {
+            font-size: 0.7em;
+            line-height: 1.3;
+            color: var(--primary-color);
+        }
+
+        .reveal pre {
+            font-size: 0.8em;
+            line-height: 1.2;
+        }
+
+        .reveal pre code {
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 1em;
+            border-radius: 8px;
+            background: #000000 !important; /* Black background */
+            color: #e0e0e0 !important; /* Light text */
+        }
+
+        /* Python syntax highlighting with purple theme */
+        .reveal pre code.python .hljs-keyword,
+        .reveal pre code.python .hljs-built_in,
+        .reveal pre code.python .hljs-type {
+            color: #bb86fc !important; /* Purple for keywords */
+        }
+
+        .reveal pre code.python .hljs-string,
+        .reveal pre code.python .hljs-title,
+        .reveal pre code.python .hljs-doctag {
+            color: #ff9999 !important; /* Light red for strings and docstrings */
+        }
+
+        .reveal pre code.python .hljs-function,
+        .reveal pre code.python .hljs-class,
+        .reveal pre code.python .hljs-title.function {
+            color: #ffffff !important; /* White for function names */
+        }
+
+        .reveal pre code.python .hljs-comment {
+            color: #888888 !important; /* Gray for comments */
+        }
+
+        .reveal pre code.python .hljs-number {
+            color: #ff9f43 !important; /* Orange for numbers */
+        }
+
+        .reveal pre code.python .hljs-variable,
+        .reveal pre code.python .hljs-attr {
+            color: #ff6b9d !important; /* Pink for variables */
+        }
+
+        .code-title {
+            color: var(--primary-color);
+            font-size: 1.3em; /* Reduced from 2.0em */
+            margin-bottom: 0.3em;
+            margin-top: 0.3em;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            color: #000;
+            padding: 0.2em 0.5em;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1em;
+            margin: 1em 0;
+        }
+
+        .pattern-grid-six {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8em;
+            margin: 1em 0;
+        }
+
+        .pattern-card {
+            background: linear-gradient(135deg, rgba(66, 175, 250, 0.1), rgba(78, 205, 196, 0.1));
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 0.8em; /* Increased to provide more space */
+            text-align: center;
+            transition: transform 0.3s ease;
+            min-height: 4em; /* Ensure minimum height for content */
+        }
+
+        .pattern-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(66, 175, 250, 0.3);
+        }
+
+        .pattern-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.3em;
+            font-size: 1.0em; /* Further reduced for better fit */
+            line-height: 1.2; /* Tighter line height */
+            word-wrap: break-word; /* Allow text wrapping */
+        }
+
+        .pattern-card p {
+            font-size: 0.85em; /* Slightly reduce description text */
+            line-height: 1.3;
+            margin: 0;
+            word-wrap: break-word; /* Allow text wrapping */
+        }
+
+        .pattern-section {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1em;
+            margin: 1em 0;
+            background: rgba(66, 175, 250, 0.05);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .vs-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2em;
+            align-items: start;
+        }
+
+        .small-text {
+            font-size: 0.75em; /* Reduced slightly */
+            line-height: 1.3; /* Tighter line height */
+            margin: 0.2em 0;
+        }
+
+        .reveal ul {
+            list-style: none;
+        }
+
+        .reveal li::before {
+            content: "→";
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-right: 0.5em;
+        }
+
+        .flow-diagram {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1em;
+            margin: 1em 0;
+            font-family: monospace;
+            text-align: center;
+        }
+
+        .emphasis-box {
+            background: linear-gradient(45deg, rgba(66, 175, 250, 0.2), rgba(255, 107, 107, 0.2));
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 1.5em;
+            margin: 1em 0;
+            text-align: center;
+        }
+
+        .reveal .progress {
+            color: var(--primary-color);
+        }
+
+        .reveal .controls {
+            color: var(--primary-color);
+        }
+
+        /* Animation for pattern cards */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal .present .pattern-card {
+            animation: slideInUp 0.6s ease forwards;
+        }
+
+        /* Numbered steps */
+        .numbered-list {
+            counter-reset: step-counter;
+            text-align: left !important; /* Force left alignment */
+        }
+
+        .numbered-list li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 2em;
+            text-align: left !important; /* Force left alignment for list items */
+            margin-bottom: 0.5em;
+        }
+
+        .numbered-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--primary-color);
+            color: #000;
+            width: 1.5em;
+            height: 1.5em;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .component-diagram {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 1.5em;
+            margin: 1em 0;
+            text-align: center;
+        }
+
+        .trade-off-box {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 1em;
+            margin: 0.5em 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Title Slide -->
+            <section data-background-gradient="linear-gradient(45deg, #1e1e1e, #2d2d2d)">
+                <h1>Agentic AI Design & Patterns</h1>
+                <h2 style="color: #42affa;">Complete Framework for Building Autonomous AI Systems</h2>
+                <div class="emphasis-box">
+                    <h3>Design Fundamentals and Implementation Patterns</h3>
+                    <p class="small-text">
+                        From architectural foundations to production-ready autonomous agents
+                    </p>
+                </div>
+                <div class="author-info" style="margin-top: 2em; padding: 1.5em; background: rgba(66, 175, 250, 0.1); border-radius: 12px; border: 1px solid var(--primary-color);">
+                    <h3 style="color: var(--primary-color); margin-bottom: 0.5em;">Giorgio Zoppi</h3>
+                    <p style="color: var(--text-light); margin-bottom: 0.3em;">Senior AI Engineer</p>
+                    <p class="small-text" style="color: #42affa;">
+                        <a href="mailto:giorgio.zoppi@yenflow.com" style="color: #42affa; text-decoration: none;">giorgio.zoppi@yenflow.com</a>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Reference -->
+            <section>
+                <h2>Reference & Inspiration</h2>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 2em; margin: 2em 0;">
+                    <div style="flex: 1; text-align: center;">
+                        <img src="agentic_design_pattern.jpg"
+                             alt="Agentic Design Patterns Book by Antonio Gulli"
+                             style="max-height: 400px; max-width: 300px; border-radius: 12px; border: 2px solid var(--primary-color); box-shadow: 0 4px 12px rgba(66, 175, 250, 0.3);">
+                    </div>
+                    <div style="flex: 1; text-align: left; padding-left: 2em;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 0.5em;">Agentic Design Patterns</h3>
+                        <h4 style="color: var(--text-light); margin-bottom: 1em;">A Hands-On Guide to Building Intelligent Systems</h4>
+                        <p class="small-text" style="margin-bottom: 1em;">
+                            <strong>Author:</strong> Antonio Gulli<br>
+                            <strong>Google Senior Engineer</strong>
+                        </p>
+                        <p class="small-text" style="margin-bottom: 1em;">
+                            📚 400+ pages of comprehensive AI agent patterns<br>
+                            🎯 21 distinct patterns for autonomous systems<br>
+                            🚀 Release: December 2025
+                        </p>
+                    </div>
+                </div>
+                <div class="pattern-section" style="margin-top: 1em;">
+                    <p class="small-text">This presentation builds upon and extends the foundational concepts from Antonio Gulli's comprehensive guide, providing practical implementation examples and real-world applications of agentic design patterns.</p>
+                </div>
+            </section>
+
+            <!-- Part 1: Design Fundamentals -->
+            <section>
+                <section>
+                    <h1>Part 1: Design Fundamentals</h1>
+                    <div class="emphasis-box">
+                        <h2>Building Your First Agent System</h2>
+                        <p class="small-text">Start with a simple slice, build incrementally, and scale systematically</p>
+                    </div>
+                </section>
+
+                <!-- The Customer Support Example -->
+                <section>
+                    <h2 style="font-size: 1.8em; margin-bottom: 0.3em;">Starting Simple: Customer Support Agent</h2>
+                    <div class="pattern-section" style="margin: 0.5em 0; padding: 0.8em;">
+                        <h3 style="font-size: 1.3em; margin-bottom: 0.3em;">The Problem</h3>
+                        <p class="small-text" style="font-size: 0.75em; line-height: 1.3;">Customer support team handles dozens of repetitive emails daily: refund requests, order cancellations, address changes. Each takes 2 minutes of human time following predictable patterns.</p>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; margin: 1em 0; flex-wrap: wrap;">
+                        <div style="background: #ffeb3b; color: #000; padding: 0.4em 0.6em; border: 2px solid #333; border-radius: 6px; font-weight: bold; margin: 0.15em; font-size: 0.7em; text-align: center;">
+                            Customer Message<br>+ Order Record
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1em; margin: 0 0.15em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.4em 0.6em; border: 2px solid #333; border-radius: 6px; font-weight: bold; margin: 0.15em; font-size: 0.7em; text-align: center;">
+                            Decide<br>Tool
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1em; margin: 0 0.15em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.4em 0.6em; border: 2px solid #333; border-radius: 6px; font-weight: bold; margin: 0.15em; font-size: 0.7em; text-align: center;">
+                            Execute
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1em; margin: 0 0.15em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.4em 0.6em; border: 2px solid #333; border-radius: 6px; font-weight: bold; margin: 0.15em; font-size: 0.7em; text-align: center;">
+                            Confirmation
+                        </div>
+                    </div>
+                    <div class="vs-comparison" style="gap: 1em; margin: 0.5em 0;">
+                        <div>
+                            <h4 style="font-size: 1.1em; margin-bottom: 0.3em;">Scope Decision</h4>
+                            <ul class="small-text" style="font-size: 0.7em; line-height: 1.2;">
+                                <li>Too narrow: Only cancellations</li>
+                                <li>Too broad: All support inquiries</li>
+                                <li><span class="highlight">Just right:</span> Cancel + Refund + Address changes</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 1.1em; margin-bottom: 0.3em;">Success Criteria</h4>
+                            <ul class="small-text" style="font-size: 0.7em; line-height: 1.2;">
+                                <li>Concrete inputs (message + order)</li>
+                                <li>Structured outputs (tool calls + confirmations)</li>
+                                <li>Tight feedback loop</li>
+                                <li>Measurable improvements</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- First Working Agent Code -->
+          
+<section>
+    <h3>Your First Working Agent</h3>
+    <p>Building a simple customer support agent with LangChain and LangGraph</p>
+</section>
+
+<!-- Section 2: Tool Definition -->
+<section>
+    <h3>Step 1: Define Business Tools</h3>
+    <div class="code-title">Creating a Cancellation Tool</div>
+    <pre><code class="python">
+from langchain.tools import tool
+# Define business tool
+@tool
+def cancel_order(order_id: str) -> str:
+    """Cancel an order that hasn't shipped."""
+    return f"Order {order_id} has been cancelled."
+    </code></pre>
+    <p>Tools are the actions your agent can perform</p>
+</section>
+
+<!-- Section 3: Agent Brain Function -->
+<section>
+    <h3>Step 2: The Agent "Brain"</h3>
+    <div class="code-title">Core Decision Logic</div>
+    <pre><code class="python">
+from langchain_openai.chat_models import ChatOpenAI
+from langchain.schema import SystemMessage, HumanMessage, AIMessage
+def call_model(state):
+    msgs = state["messages"]
+    order = state.get("order", {"order_id": "UNKNOWN"})
+    # System prompt tells the model exactly what to do
+    prompt = f'''You are an ecommerce support agent.
+    ORDER ID: {order['order_id']}
+    If the customer asks to cancel, call cancel_order(order_id) 
+    and then send a simple confirmation.
+    Otherwise, just respond normally.'''
+    
+    full = [SystemMessage(prompt)] + msgs
+    
+    # 1st LLM pass: decides whether to call our tool
+    first = ChatOpenAI(model="gpt-4", temperature=0)(full)
+    out = [first]
+    </code></pre>
+</section>
+
+<!-- Section 4: Tool Execution -->
+<section>
+    <h3>Step 3: Tool Execution Logic</h3>
+    <div class="code-title">Handling Tool Calls</div>
+    <pre><code class="python">
+    if getattr(first, "tool_calls", None):
+        # run the cancel_order tool
+        tc = first.tool_calls[0]
+        result = cancel_order(**tc["args"])
+        out.append(ToolMessage(content=result, tool_call_id=tc["id"]))
+
+        # 2nd LLM pass: generate the final confirmation text
+        second = ChatOpenAI(model="gpt-4", temperature=0)(full + out)
+        out.append(second)
+
+    return {"messages": out}
+    </code></pre>
+    <p>Two-step process: Execute tool → Generate response</p>
+</section>
+
+<!-- Section 5: Graph Construction -->
+<section>
+    <h3>Step 4: Building the State Graph</h3>
+    <div class="code-title">Wiring It All Together</div>
+    <pre><code class="python">
+from langgraph.graph import StateGraph
+
+# Wire it all up in a StateGraph
+def construct_graph():
+    g = StateGraph({"order": None, "messages": []})
+    g.add_node("assistant", call_model)
+    g.set_entry_point("assistant")
+    return g.compile()
+
+graph = construct_graph()
+    </code></pre>
+    <p>StateGraph manages conversation flow and state</p>
+</section>
+
+<!-- Section 6: Usage Example -->
+<section>
+    <h3>Step 5: Running the Agent</h3>
+    <div class="code-title">Example Usage</div>
+    <pre><code class="python">
+# Example usage
+example_order = {"order_id": "A12345"}
+convo = [HumanMessage(content="Please cancel my order A12345.")]
+result = graph.invoke({"order": example_order, "messages": convo})
+    </code></pre>
+    <p>Your agent is ready to handle customer requests!</p>
+</section>
+
+<!-- Section 7: Complete Code Overview -->
+<section>
+    <h3>Complete Agent Architecture</h3>
+    <div style="text-align: left; font-size: 0.8em;">
+        <p><strong>Flow:</strong></p>
+        <ol>
+            <li>Customer sends message</li>
+            <li>LLM analyzes and decides if tool needed</li>
+            <li>If yes: Execute tool → Generate response</li>
+            <li>If no: Generate direct response</li>
+        </ol>
+        <p><strong>Key Components:</strong></p>
+        <ul>
+            <li>🔧 <strong>Tools</strong> - Actions the agent can perform</li>
+            <li>🧠 <strong>Brain</strong> - Decision logic and execution</li>
+            <li>🕸️ <strong>Graph</strong> - State management and flow control</li>
+        </ul>
+    </div>
+</section>
+                </section>
+
+                <!-- Testing and Evaluation -->
+                <section>
+                    <h2 style="font-size: 1.4em; margin-bottom: 0.3em;">Testing Your Agent</h2>
+                    <div class="pattern-section" style="margin: 0.4em 0; padding: 0.6em;">
+                        <h3 style="font-size: 1.2em; margin-bottom: 0.2em;">Key Questions</h3>
+                        <ul class="small-text" style="font-size: 0.7em; line-height: 1.2;">
+                            <li>Did it call the correct tool (cancel_order)?</li>
+                            <li>Did it pass the right parameters (correct order ID)?</li>
+                            <li>Did it send a clear confirmation message?</li>
+                        </ul>
+                    </div>
+                    <div class="code-title" style="font-size: 1.1em; margin: 0.2em 0;">Minimal Evaluation</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Minimal evaluation check
+example_order = {"order_id": "B73973"}
+convo = [HumanMessage(content='''Please cancel order #B73973.
+    I found a cheaper option elsewhere.''')]
+result = graph.invoke({"order": example_order, "messages": convo})
+
+assert any("cancel_order" in str(m.content) for m in result["messages"]), \
+    "Cancel order tool not called"
+assert any("cancelled" in m.content.lower() for m in result["messages"]), \
+    "Confirmation message missing"
+print("✅ Agent passed minimal evaluation.")
+                    </code></pre>
+                    <div class="emphasis-box" style="padding: 0.8em; margin: 0.3em 0;">
+                        <p class="small-text" style="font-size: 0.7em;"><span class="highlight">Remember:</span> An untested agent is an untrusted agent</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Core Components -->
+            <section>
+                <section>
+                    <h1>Core Components of Agent Systems</h1>
+                    <div style="display: flex; align-items: center; justify-content: center; margin: 1.5em 0;">
+                        <div style="background: #ffeb3b; color: #000; padding: 0.8em 1.2em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.3em;">
+                            LLM/SLM
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.5em; margin: 0 0.3em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.8em 1.2em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.3em;">
+                            Tools
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.5em; margin: 0 0.3em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.8em 1.2em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.3em;">
+                            Memory
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.5em; margin: 0 0.3em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.8em 1.2em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.3em;">
+                            Orchestration
+                        </div>
+                    </div>
+                    <p class="small-text" style="text-align: center; margin-top: 1em;">Each component plays a critical role in shaping agent capabilities</p>
+                </section>
+
+                <!-- Model Selection -->
+                <section>
+                    <h2>Model Selection</h2>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Large Foundation Models</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Best for:</span> Open-ended environments</li>
+                                <li>Nuanced understanding</li>
+                                <li>Creative generation</li>
+                                <li><span class="highlight">Cost:</span> High compute, cloud infrastructure</li>
+                                <li><span class="highlight">Examples:</span> GPT-4, Claude Opus</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Smaller Specialized Models</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Best for:</span> Well-defined, repetitive tasks</li>
+                                <li>Fast response times</li>
+                                <li>Local deployment</li>
+                                <li><span class="highlight">Cost:</span> Lower resources, edge deployment</li>
+                                <li><span class="highlight">Examples:</span> Phi-4, Llama 3.1</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pattern-section">
+                        <h4>Key Considerations</h4>
+                        <ul class="small-text">
+                            <li><span class="highlight">Task Complexity:</span> Match model capability to problem difficulty</li>
+                            <li><span class="highlight">Modality:</span> Text-only vs multimodal (vision, audio)</li>
+                            <li><span class="highlight">Customization:</span> Open source vs proprietary APIs</li>
+                            <li><span class="highlight">Cost vs Latency:</span> Performance trade-offs</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Model Performance Comparison -->
+                <section>
+                    <h3>2025 LLM Performance & Cost Analysis</h3>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Performance Benchmarks (2025)</h4>
+                            <div class="small-text">
+                                <table style="font-size: 0.65em; width: 100%;">
+                                    <tr><th>Model</th><th>SWE-bench</th><th>Math (AIME)</th><th>Speed (TPS)</th></tr>
+                                    <tr><td>Claude 4</td><td>72.7%</td><td>90%</td><td>170</td></tr>
+                                    <tr><td>GPT-4.1</td><td>54.6%</td><td>83%</td><td>131</td></tr>
+                                    <tr><td>Gemini 2.5 Pro</td><td>63.8%</td><td>86.7%</td><td>250+</td></tr>
+                                    <tr><td>DeepSeek v3</td><td>49.7%</td><td>79%</td><td>195</td></tr>
+                                </table>
+                            </div>
+                            <p class="small-text"><span class="highlight">Context Windows:</span> Claude 4 (200K), GPT-4.1 (1M), Gemini 2.5 (2M)<br>
+                            <span class="highlight">Best for:</span> Claude (coding), GPT-4 (general), Gemini (multimedia)</p>
+                        </div>
+                        <div>
+                            <h4>Pricing (Per Million Tokens)</h4>
+                            <div class="small-text">
+                                <table style="font-size: 0.65em; width: 100%;">
+                                    <tr><th>Model</th><th>Input</th><th>Output</th><th>Best Use</th></tr>
+                                    <tr><td>Claude 4</td><td>$3-15</td><td>$15-75</td><td>Premium coding</td></tr>
+                                    <tr><td>GPT-4.1</td><td>$2</td><td>$8</td><td>Balanced tasks</td></tr>
+                                    <tr><td>Gemini 2.5</td><td>$1.25-2.5</td><td>$5-10</td><td>Cost-effective</td></tr>
+                                    <tr><td>Gemini Flash</td><td>$0.075</td><td>$0.30</td><td>High volume</td></tr>
+                                </table>
+                            </div>
+                            <p class="small-text"><span class="highlight">Cost-Performance:</span> Gemini Flash leads value proposition<br>
+                            <span class="highlight">All plans:</span> $20/month consumer tier available</p>
+                        </div>
+                    </div>
+                    <div class="pattern-section" style="margin-top: 0.5em;">
+                        <h4>2025 Key Insights</h4>
+                        <p class="small-text">Claude 4 dominates software engineering (72.7% SWE-bench), Gemini 2.5 offers best cost-performance with 2M token context, GPT-4.1 provides balanced capabilities across domains.</p>
+                    </div>
+                </section>
+
+                <!-- Tools -->
+                <section>
+                    <h2>Tools: Extending Agent Capabilities</h2>
+                    <div class="pattern-grid">
+                        <div class="pattern-card">
+                            <h4>Local Tools</h4>
+                            <p class="small-text">Internal logic and computations without external dependencies</p>
+                            <ul class="small-text">
+                                <li>Mathematical calculations</li>
+                                <li>Data retrieval from local databases</li>
+                                <li>Rule-based decisions</li>
+                            </ul>
+                        </div>
+                        <div class="pattern-card">
+                            <h4>API-Based Tools</h4>
+                            <p class="small-text">External services and real-time data sources</p>
+                            <ul class="small-text">
+                                <li>Weather data APIs</li>
+                                <li>Stock prices</li>
+                                <li>Social media updates</li>
+                            </ul>
+                        </div>
+                        <div class="pattern-card">
+                            <h4>MCP Tools</h4>
+                            <p class="small-text">Model Context Protocol for structured context injection</p>
+                            <ul class="small-text">
+                                <li>User profiles</li>
+                                <li>Conversation history</li>
+                                <li>Task-specific metadata</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pattern-section">
+                        <h4>Design Principles</h4>
+                        <ul class="small-text">
+                            <li><span class="highlight">Modularity:</span> Self-contained, easily replaceable components</li>
+                            <li><span class="highlight">Security:</span> Input validation, rate limiting, audit logging</li>
+                            <li><span class="highlight">Reliability:</span> Error handling and graceful degradation</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Memory -->
+                <section>
+                    <h2>Memory Systems</h2>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Short-Term Memory</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Purpose:</span> Current task/conversation context</li>
+                                <li><span class="highlight">Implementation:</span> Rolling context windows</li>
+                                <li><span class="highlight">Use case:</span> Chatbots, virtual assistants</li>
+                                <li><span class="highlight">Benefit:</span> Maintains coherence during interaction</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Long-Term Memory</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Purpose:</span> Extended knowledge and experiences</li>
+                                <li><span class="highlight">Implementation:</span> Databases, knowledge graphs</li>
+                                <li><span class="highlight">Use case:</span> Personalized recommendations</li>
+                                <li><span class="highlight">Benefit:</span> Learning and adaptation over time</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pattern-section">
+                        <h4>Memory Management</h4>
+                        <p class="small-text">Effective retrieval requires organizing and indexing stored data, differentiating between relevant and irrelevant information, and implementing forgetting mechanisms to avoid clutter.</p>
+                    </div>
+                </section>
+
+                <!-- Orchestration -->
+                <section>
+                    <h2>Orchestration: Coordinating Complex Workflows</h2>
+                    <div style="display: flex; align-items: center; justify-content: center; margin: 1.5em 0;">
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Plan
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.3em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Execute
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.3em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Monitor
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.3em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Adapt
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.3em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Continue
+                        </div>
+                    </div>
+                    <div class="pattern-section">
+                        <h3>Key Responsibilities</h3>
+                        <ul class="small-text">
+                            <li><span class="highlight">Composition:</span> Sequence and schedule multiple skills</li>
+                            <li><span class="highlight">Forecasting:</span> Predict outcomes and select optimal paths</li>
+                            <li><span class="highlight">Monitoring:</span> Track progress and environmental changes</li>
+                            <li><span class="highlight">Adaptation:</span> Reroute workflows when conditions change</li>
+                        </ul>
+                    </div>
+                    <div class="emphasis-box">
+                        <h4>Without Orchestration</h4>
+                        <p class="small-text">Even powerful skills risk running at cross-purposes or stalling entirely</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Design Trade-offs -->
+            <section>
+                <section>
+                    <h1>Design Trade-offs</h1>
+                    <div class="emphasis-box">
+                        <h2>Balancing Performance, Scalability, Reliability & Cost</h2>
+                        <p class="small-text">Strategic decisions that significantly impact real-world agent performance</p>
+                    </div>
+                </section>
+
+                <!-- Performance Trade-offs -->
+                <section>
+                    <h2>Performance: Speed vs Accuracy</h2>
+                    <div class="vs-comparison">
+                        <div class="trade-off-box">
+                            <h4>Prioritize Speed</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">When:</span> Real-time environments</li>
+                                <li><span class="highlight">Examples:</span> Autonomous vehicles, trading systems</li>
+                                <li><span class="highlight">Trade-off:</span> May sacrifice precision for responsiveness</li>
+                                <li><span class="highlight">Solution:</span> Fast approximation + refined follow-up</li>
+                            </ul>
+                        </div>
+                        <div class="trade-off-box">
+                            <h4>Prioritize Accuracy</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">When:</span> High-stakes decisions</li>
+                                <li><span class="highlight">Examples:</span> Medical diagnosis, legal analysis</li>
+                                <li><span class="highlight">Trade-off:</span> Slower response times</li>
+                                <li><span class="highlight">Solution:</span> Multi-stage validation processes</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pattern-section">
+                        <h4>Hybrid Approach</h4>
+                        <p class="small-text">Provide fast initial response, then refine with additional processing time and data</p>
+                    </div>
+                </section>
+
+                <!-- Scalability -->
+                <section>
+                    <h2>Scalability: Engineering for Growth</h2>
+                    <div class="pattern-section">
+                        <h3>GPU Resource Management</h3>
+                        <p class="small-text">GPUs are often the most expensive and limiting factor in scaling agent systems</p>
+                    </div>
+                    <div class="pattern-grid">
+                        <div class="pattern-card">
+                            <h4>Dynamic Allocation</h4>
+                            <p class="small-text">Assign GPU resources based on real-time demand, reducing idle time</p>
+                        </div>
+                        <div class="pattern-card">
+                            <h4>Elastic Provisioning</h4>
+                            <p class="small-text">Auto-scale resources using cloud services or on-premises clusters</p>
+                        </div>
+                        <div class="pattern-card">
+                            <h4>Priority Queuing</h4>
+                            <p class="small-text">Give high-priority tasks immediate access while queuing less critical ones</p>
+                        </div>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Horizontal Scaling</h4>
+                            <ul class="small-text">
+                                <li>Add more GPU nodes to handle workload</li>
+                                <li>Cluster setup for high-volume tasks</li>
+                                <li>Distributed inference across multiple GPUs</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Hybrid Cloud Approach</h4>
+                            <ul class="small-text">
+                                <li>On-premises + cloud GPU resources</li>
+                                <li>Burst scaling during peak demand</li>
+                                <li>Cost optimization through dynamic allocation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reliability & Cost -->
+                <section>
+                    <h2>Reliability & Cost Considerations</h2>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Reliability Requirements</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Fault Tolerance:</span> Graceful error handling and recovery</li>
+                                <li><span class="highlight">Consistency:</span> Reliable performance across scenarios</li>
+                                <li><span class="highlight">Testing:</span> Extensive edge case validation</li>
+                                <li><span class="highlight">Monitoring:</span> Continuous performance oversight</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Cost Optimization</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Development:</span> Team expertise, testing infrastructure</li>
+                                <li><span class="highlight">Operational:</span> Compute power, data storage, bandwidth</li>
+                                <li><span class="highlight">Strategies:</span> Lean models, cloud resources, open source tools</li>
+                                <li><span class="highlight">ROI Balance:</span> Cost justified by delivered value</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Architecture Patterns -->
+            <section>
+                <section>
+                    <h1>Architecture Design Patterns</h1>
+                    <div class="emphasis-box">
+                        <h2>Single-Agent vs Multi-Agent Systems</h2>
+                        <p class="small-text">Choosing the right structural pattern sets the stage for scalability and resilience</p>
+                    </div>
+                </section>
+
+                <!-- Single vs Multi-Agent -->
+                <section>
+                    <h2>Single-Agent vs Multi-Agent Architectures</h2>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Single-Agent Architecture</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Best for:</span> Well-defined, narrow tasks</li>
+                                <li><span class="highlight">Advantages:</span> Simple design, easy deployment</li>
+                                <li><span class="highlight">Examples:</span> Basic chatbots, code generation</li>
+                                <li><span class="highlight">Scalability:</span> Limited to single entity capabilities</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Multi-Agent Architecture</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Best for:</span> Complex, distributed problems</li>
+                                <li><span class="highlight">Advantages:</span> Specialization, parallelism, resilience</li>
+                                <li><span class="highlight">Examples:</span> Financial trading, research platforms</li>
+                                <li><span class="highlight">Challenges:</span> Coordination complexity, higher token usage</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pattern-section">
+                        <h4>Multi-Agent Benefits</h4>
+                        <ul class="small-text">
+                            <li><span class="highlight">Collaboration:</span> Specialized agents for different tasks</li>
+                            <li><span class="highlight">Parallelism:</span> Simultaneous execution of multiple tasks</li>
+                            <li><span class="highlight">Redundancy:</span> Failure in one agent doesn't compromise the system</li>
+                            <li><span class="highlight">Scalability:</span> Add agents to handle increasing workload</li>
+                        </ul>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Best Practices -->
+            <section>
+                <section>
+                    <h1>Best Practices for Agent Development</h1>
+                    <div class="emphasis-box">
+                        <h2>Iterative Design • Evaluation Strategy • Real-World Testing</h2>
+                        <p class="small-text">Essential practices for creating adaptable, efficient, and reliable agent systems</p>
+                    </div>
+                </section>
+
+                <!-- Iterative Design -->
+                <section>
+                    <h2>Iterative Design</h2>
+                    <div class="pattern-section">
+                        <h3>Build Small, Test Fast, Improve Continuously</h3>
+                        <p class="small-text">Focus on building functional prototypes that deliver value, even if basic</p>
+                    </div>
+                    <div class="pattern-grid">
+                        <div class="pattern-card">
+                            <h4>Early Detection</h4>
+                            <p class="small-text">Identify design flaws before they become embedded in the system</p>
+                        </div>
+                        <div class="pattern-card">
+                            <h4>User-Centric</h4>
+                            <p class="small-text">Frequent feedback ensures alignment with user needs and expectations</p>
+                        </div>
+                        <div class="pattern-card">
+                            <h4>Scalable Growth</h4>
+                            <p class="small-text">Start with MVP, grow incrementally with thoroughly tested additions</p>
+                        </div>
+                    </div>
+                    <div class="numbered-list small-text">
+                        <li>Develop prototypes quickly - focus on core functionality first</li>
+                        <li>Test and gather feedback after each iteration</li>
+                        <li>Refine and repeat based on insights and performance data</li>
+                    </div>
+                </section>
+
+                <!-- Evaluation Strategy -->
+                <section>
+                    <h2>Evaluation Strategy</h2>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Functional Testing</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Correctness:</span> Consistent, accurate outputs</li>
+                                <li><span class="highlight">Boundary Testing:</span> Edge cases and extreme inputs</li>
+                                <li><span class="highlight">Domain Metrics:</span> Task-specific accuracy requirements</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>User Experience Testing</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Satisfaction Scores:</span> NPS, CSAT measurements</li>
+                                <li><span class="highlight">Task Completion:</span> Success rate tracking</li>
+                                <li><span class="highlight">Feedback Signals:</span> Thumbs up/down, ratings</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pattern-section">
+                        <h4>Human-in-the-Loop Validation</h4>
+                        <p class="small-text">Expert review of agent outputs to verify correctness, ethical compliance, and alignment with best practices</p>
+                    </div>
+                </section>
+
+                <!-- Real-World Testing -->
+                <section>
+                    <h2>Real-World Testing</h2>
+                    <div style="display: flex; align-items: center; justify-content: center; margin: 1.5em 0; flex-wrap: wrap;">
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.8em; text-align: center;">
+                            Controlled<br>Environment
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.8em; text-align: center;">
+                            Limited<br>Deployment
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.8em; text-align: center;">
+                            Performance<br>Monitoring
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.8em; text-align: center;">
+                            Full<br>Rollout
+                        </div>
+                    </div>
+                    <div class="pattern-section">
+                        <h3>Why Real-World Testing Matters</h3>
+                        <ul class="small-text">
+                            <li><span class="highlight">Complexity:</span> Real environments are unpredictable and dynamic</li>
+                            <li><span class="highlight">Edge Cases:</span> Uncover scenarios not covered in development</li>
+                            <li><span class="highlight">Load Performance:</span> Behavior under high demand and stress</li>
+                        </ul>
+                    </div>
+                    <div class="numbered-list small-text">
+                        <li>Deploy in phases - start small-scale before full deployment</li>
+                        <li>Monitor agent behavior and performance metrics continuously</li>
+                        <li>Collect user feedback during real-world testing</li>
+                        <li>Iterate based on insights from live environment</li>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Transition to Patterns -->
+            <section>
+                <h1>Part 2: Implementation Patterns</h1>
+                <div class="emphasis-box">
+                    <h2>AI Agentic Design Patterns</h2>
+                    <p class="small-text">From basic chaining to advanced agent-to-agent communication</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5em; margin: 0.5em 0;">
+                    <div class="pattern-card" style="padding: 0.4em;">
+                        <h4 style="font-size: 1em; margin-bottom: 0.2em;">Prompt Chaining</h4>
+                        <p class="small-text" style="font-size: 0.65em;">Sequential processing</p>
+                    </div>
+                    <div class="pattern-card" style="padding: 0.4em;">
+                        <h4 style="font-size: 1em; margin-bottom: 0.2em;">Routing</h4>
+                        <p class="small-text" style="font-size: 0.65em;">Intelligent decisions</p>
+                    </div>
+                    <div class="pattern-card" style="padding: 0.4em;">
+                        <h4 style="font-size: 1em; margin-bottom: 0.2em;">Parallelization</h4>
+                        <p class="small-text" style="font-size: 0.65em;">Concurrent processing</p>
+                    </div>
+                    <div class="pattern-card" style="padding: 0.4em;">
+                        <h4 style="font-size: 1em; margin-bottom: 0.2em;">Reflection</h4>
+                        <p class="small-text" style="font-size: 0.65em;">Self-correction</p>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5em; margin: 0.5em 0;">
+                    <div class="pattern-card" style="padding: 0.4em;">
+                        <h4 style="font-size: 1em; margin-bottom: 0.2em;">Tool Use</h4>
+                        <p class="small-text" style="font-size: 0.65em;">Real-world integration</p>
+                    </div>
+                    <div class="pattern-card" style="padding: 0.4em;">
+                        <h4 style="font-size: 1em; margin-bottom: 0.2em;">Learning</h4>
+                        <p class="small-text" style="font-size: 0.65em;">Autonomous evolution</p>
+                    </div>
+                    <div class="pattern-card" style="padding: 0.4em;">
+                        <h4 style="font-size: 1em; margin-bottom: 0.2em;">Human-in-Loop</h4>
+                        <p class="small-text" style="font-size: 0.65em;">AI-human collaboration</p>
+                    </div>
+                    <div class="pattern-card" style="padding: 0.4em;">
+                        <h4 style="font-size: 1em; margin-bottom: 0.2em;">A2A Communication</h4>
+                        <p class="small-text" style="font-size: 0.65em;">Agent coordination</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pattern 1: Chaining -->
+            <section>
+                <section>
+                    <h2>Pattern 1: Prompt Chaining</h2>
+                    <div class="pattern-section">
+                        <h3>Divide-and-Conquer Strategy</h3>
+                        <p>Break complex tasks into sequential, manageable sub-problems where each step's output feeds into the next</p>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; margin: 1.5em 0;">
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Input
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.3em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Extract
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.3em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Transform
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.3em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Validate
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.3em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Output
+                        </div>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Why Chain Prompts?</h4>
+                            <ul class="small-text">
+                                <li><span style="color: #ff6b6b;">Single Prompt Issues:</span> Instruction neglect, contextual drift</li>
+                                <li><span style="color: #ff6b6b;">Error Propagation:</span> Early errors amplify through complex tasks</li>
+                                <li><span style="color: #ff6b6b;">Cognitive Overload:</span> Increased hallucination risk</li>
+                                <li><span style="color: #4ecdc4;">Chaining Solution:</span> Sequential decomposition improves reliability</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Core Applications</h4>
+                            <ul class="small-text">
+                                <li>Information processing workflows</li>
+                                <li>Complex query answering</li>
+                                <li>Data extraction & transformation</li>
+                                <li>Content generation pipelines</li>
+                                <li>Code generation & refinement</li>
+                                <li>Multimodal reasoning tasks</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Context Engineering Introduction -->
+                <section>
+                    <h3>Context Engineering Foundation</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.2em; border-radius: 8px;">
+                        <p style="font-size: 0.9em; line-height: 1.4; margin: 0;">
+                            <span style="color: var(--primary-color); font-weight: bold;">Context Engineering</span> is the systematic discipline of designing complete informational environments for AI models.
+                            Unlike traditional prompt engineering that focuses on query phrasing, it encompasses:
+                        </p>
+                        <ul style="font-size: 0.8em; margin: 0.5em 0; padding-left: 1.5em;">
+                            <li><span style="color: #ffeb3b;">System prompts:</span> Foundational operational parameters</li>
+                            <li><span style="color: #ffeb3b;">External data:</span> Retrieved documents and tool outputs</li>
+                            <li><span style="color: #ffeb3b;">Implicit context:</span> User identity, history, environmental state</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Part 1: LangGraph State Definition -->
+                <section>
+                    <h3>Step 1: LangGraph State & Setup</h3>
+                    <div class="code-title" style="font-size: 1.1em;">State Schema & LLM Initialization</div>
+                    <pre style="font-size: 0.75em;"><code class="python">
+from langgraph.graph import StateGraph, END
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from typing import TypedDict
+# Initialize the Language Model
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+# Define the State schema
+class ChainState(TypedDict):
+    text_input: str         # Raw input text
+    specifications: str     # Extracted specifications
+    final_json: str        # Final JSON output
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">State carries data through sequential processing nodes</p>
+                </section>
+
+                <!-- Part 2: Node Functions -->
+                <section>
+                    <h3>Step 2: LangGraph Node Functions</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Extract and Transform Node Implementations</div>
+                    <pre style="font-size: 0.75em;"><code class="python">
+def extract_specs(state: ChainState) -> ChainState:
+    """Extract technical specifications from raw text"""
+    prompt = ChatPromptTemplate.from_template(
+        "Extract the technical specifications from the following text:\n\n{text_input}"
+    )
+    chain = prompt | llm | StrOutputParser()
+    result = chain.invoke({"text_input": state["text_input"]})
+    return {"specifications": result}
+def transform_to_json(state: ChainState) -> ChainState:
+    """Transform extracted specs into structured JSON"""
+    prompt = ChatPromptTemplate.from_template(
+        "Transform the following specifications into a JSON object with 'cpu', 'memory', and 'storage' as keys:\n\n{specifications}"
+    )
+    chain = prompt | llm | StrOutputParser()
+    result = chain.invoke({"specifications": state["specifications"]})
+    return {"final_json": result}
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Each node function processes state and returns updates</p>
+                </section>
+
+                <!-- Part 3: Graph Construction & Execution -->
+                <section>
+                    <h3>Step 3: Graph Construction & Execution</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Build and Run the Chain Workflow</div>
+                    <pre style="font-size: 0.75em;"><code class="python">
+# Build the sequential workflow graph
+workflow = StateGraph(ChainState)
+workflow.add_node("extract", extract_specs)
+workflow.add_node("transform", transform_to_json)
+# Define the execution flow
+workflow.add_edge("extract", "transform")
+workflow.add_edge("transform", END)
+workflow.set_entry_point("extract")
+# Compile and execute the chain
+chain_system = workflow.compile()
+# Usage example
+result = chain_system.invoke({
+    "text_input": "The new laptop model features a 3.5 GHz octa-core processor, 16GB of RAM, and a 1TB NVMe SSD."
+})
+print("Final JSON Output:", result["final_json"])
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">LangGraph provides stateful execution with explicit node transitions</p>
+                </section>
+
+                <!-- Prompt Chaining Rule of Thumb -->
+                <section>
+                    <h3 style="color: var(--primary-color); font-size: 1.8em;">🎯 When to Use Prompt Chaining</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.5em; border-radius: 10px; border: 2px solid var(--primary-color);">
+                        <div style="text-align: left; font-size: 1.0em; line-height: 1.4;">
+                            <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 1em;">Use for complex problems requiring sequential, manageable steps with clear dependencies:</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; font-size: 0.9em;">
+                                <div>
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.3em 0;">📄 Information Processing</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Extract → Summarize → Extract entities → Query DB → Generate report</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">🤔 Complex Query Answering</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Decompose → Research causes → Research responses → Synthesize</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">📊 Data Extraction & Transform</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">OCR → Normalize → Calculate → Validate → Structure</p>
+                                </div>
+                                <div>
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.3em 0;">✍️ Content Generation</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Ideate → Outline → Draft sections → Review → Refine</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">💬 Conversational Agents</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Intent extraction → State update → Context preservation</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">🖼️ Multimodal Reasoning</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Extract text → Link labels → Interpret with tables</p>
+                                </div>
+                            </div>
+                            <p style="color: #ff6b6b; font-weight: bold; margin-top: 1em; font-style: italic; font-size: 0.9em;">⚠️ Avoid for simple tasks or when steps can run independently in parallel</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Pattern 2: Routing -->
+            <section>
+                <section>
+                    <h2>Pattern 2: Routing</h2>
+                    <div class="pattern-section">
+                        <h3>Intelligent Coordination</h3>
+                        <p>Supervisor-based delegation with specialized agents for different scenarios</p>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; margin: 1.5em 0;">
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Request
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.3em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Supervisor
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.3em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Intent Analysis
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.3em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Specialist Agent
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.3em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0 0.2em; font-size: 0.9em;">
+                            Response
+                        </div>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Routing Strategies</h4>
+                            <ul class="small-text">
+                                <li>Intent-based classification</li>
+                                <li>Confidence thresholds</li>
+                                <li>Fallback mechanisms</li>
+                                <li>Load balancing</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Architecture Benefits</h4>
+                            <ul class="small-text">
+                                <li>Specialized expertise</li>
+                                <li>Scalable team coordination</li>
+                                <li>Flexible system expansion</li>
+                                <li>Clear responsibility boundaries</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 1: Setup and Imports -->
+                <section>
+                    <h3>Step 1: LangGraph Supervisor Setup</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Imports & Agent Creation</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+from langgraph_supervisor import create_supervisor, create_react_agent
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage
+from langchain_community.tools import TavilySearchResults
+from langgraph.checkpoint.memory import MemorySaver
+
+# Initialize model
+model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+
+# Define tools for agents
+search_tool = TavilySearchResults(max_results=3)
+
+# Memory for conversation state
+memory = MemorySaver()
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">LangGraph supervisor provides built-in coordination</p>
+                </section>
+
+                <!-- Part 2A: Research Agent -->
+                <section>
+                    <h3>Step 2A: Research Agent</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Agent with Search Capabilities</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Create research agent with search capabilities
+research_agent = create_react_agent(
+    model=model,
+    tools=[search_tool],
+    name="research_expert",
+    prompt=(
+        "You are a world-class researcher. Use web search to find "
+        "accurate, up-to-date information on any topic. Always cite sources."
+    )
+)
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em; margin-top: 1em;">Research agent equipped with TavilySearchResults for real-time information gathering</p>
+                </section>
+
+                <!-- Part 2B: Coding Agent -->
+                <section>
+                    <h3>Step 2B: Coding Agent</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Software Engineering Specialist</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Create coding agent
+coding_agent = create_react_agent(
+    model=model,
+    tools=[],  # Add code execution tools as needed
+    name="coding_expert",
+    prompt=(
+        "You are an expert software engineer. Write clean, efficient, "
+        "well-documented code following best practices."
+    )
+)
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em; margin-top: 1em;">Coding agent focused on software development with extensible tool integration</p>
+                </section>
+
+                <!-- Part 2C: Writing Agent -->
+                <section>
+                    <h3>Step 2C: Writing Agent</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Content Creation Specialist</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Create writing agent
+writing_agent = create_react_agent(
+    model=model,
+    tools=[],
+    name="writing_expert",
+    prompt=(
+        "You are a professional writer. Create clear, engaging content "
+        "that is well-structured and easy to understand."
+    )
+)
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em; margin-top: 1em;">Writing agent specializing in documentation and content creation</p>
+                </section>
+
+                <!-- Part 3: Supervisor Creation -->
+                <section>
+                    <h3>Step 3: Create Supervisor Workflow</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Supervisor with Agent Coordination</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Create supervisor with specialized agents
+supervisor_workflow = create_supervisor(
+    agents=[research_agent, coding_agent, writing_agent],
+    model=model,
+    prompt=(
+        "You are a team supervisor managing three experts: "
+        "research_expert (for information gathering), "
+        "coding_expert (for programming tasks), and "
+        "writing_expert (for content creation). "
+        "Route tasks to the most appropriate agent based on the request type."
+    )
+)
+
+# Compile workflow with memory
+supervisor_app = supervisor_workflow.compile(
+    checkpointer=memory,
+    interrupt_before=[]  # Can add agent names to pause before execution
+)
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Supervisor automatically handles agent coordination and handoffs</p>
+                </section>
+
+                <!-- Part 4: Usage and Execution -->
+                <section>
+                    <h3>Step 4: Execute Supervisor System</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Running Multi-Agent Workflow</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Example usage with conversation threads
+config = {"configurable": {"thread_id": "supervisor_demo"}}
+
+# Complex task requiring multiple specialists
+task = "Research the latest trends in AI agent architectures, write code for a simple agent, and create documentation explaining the implementation."
+
+# Execute supervisor workflow
+result = supervisor_app.invoke(
+    {"messages": [HumanMessage(content=task)]},
+    config=config
+)
+
+# The supervisor will automatically:
+# 1. Route to research_expert for gathering information
+# 2. Hand off to coding_expert for implementation
+# 3. Transfer to writing_expert for documentation
+# 4. Coordinate between agents as needed
+
+print("Final result:", result["messages"][-1].content)
+
+# View workflow execution graph (optional)
+supervisor_app.get_graph().print_ascii()
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">LangGraph supervisor handles automatic routing and coordination</p>
+                </section>
+                <!-- Routing Rule of Thumb -->
+                <section>
+                    <h3 style="color: var(--primary-color); font-size: 1.8em;">🎯 When to Use Routing</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.5em; border-radius: 10px; border: 2px solid var(--primary-color);">
+                        <div style="text-align: left; font-size: 1.1em; line-height: 1.4;">
+                            <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 1em;">Use this pattern when different inputs require different specialized handling:</p>
+                            <ul style="margin: 0; padding-left: 1.5em;">
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🎯 Intent Classification:</span> User queries needing different expertise</li>
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🔀 Conditional Logic:</span> Decision trees based on input characteristics</li>
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">⚡ Load Balancing:</span> Distribute workload across specialized agents</li>
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🧩 Domain Expertise:</span> Different agents for different problem domains</li>
+                            </ul>
+                            <p style="color: #ff6b6b; font-weight: bold; margin-top: 1em; font-style: italic;">⚠️ Avoid when all inputs follow the same processing path</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Pattern 3: Parallelization -->
+            <section>
+                <section>
+                    <h2>Pattern 3: Parallelization</h2>
+                    <div class="pattern-section">
+                        <h3>Concurrent Task Execution</h3>
+                        <p>Execute multiple independent tasks simultaneously to improve performance and efficiency</p>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; margin: 1.5em 0; flex-wrap: wrap;">
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Input Task
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Dispatcher
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="display: flex; flex-direction: column; align-items: center; margin: 0.2em;">
+                            <div style="background: #ffeb3b; color: #000; padding: 0.4em 0.6em; border: 2px solid #333; border-radius: 6px; font-weight: bold; margin: 0.1em; font-size: 0.7em;">Task A</div>
+                            <div style="background: #ffeb3b; color: #000; padding: 0.4em 0.6em; border: 2px solid #333; border-radius: 6px; font-weight: bold; margin: 0.1em; font-size: 0.7em;">Task B</div>
+                            <div style="background: #ffeb3b; color: #000; padding: 0.4em 0.6em; border: 2px solid #333; border-radius: 6px; font-weight: bold; margin: 0.1em; font-size: 0.7em;">Task C</div>
+                            <div style="background: #ffeb3b; color: #000; padding: 0.4em 0.6em; border: 2px solid #333; border-radius: 6px; font-weight: bold; margin: 0.1em; font-size: 0.7em;">Task D</div>
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Aggregator
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Final Result
+                        </div>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Travel Planning Benefits</h4>
+                            <ul class="small-text">
+                                <li>Faster trip planning (4x speed improvement)</li>
+                                <li>Comprehensive research coverage</li>
+                                <li>Real-time pricing and availability</li>
+                                <li>Coordinated travel recommendations</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>API Integrations</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Amadeus API:</span> Flight pricing & schedules</li>
+                                <li><span class="highlight">Booking.com API:</span> Hotel availability</li>
+                                <li><span class="highlight">Eventbrite API:</span> Local events</li>
+                                <li><span class="highlight">Yelp/Google Places:</span> Restaurant reviews</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 1: Tool Setup -->
+                <section>
+                    <h3>Step 1: Import & Setup</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Dependencies and Configuration</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+import os
+import requests
+from langgraph_swarm import Swarm, Agent, Command
+from langchain_openai import ChatOpenAI
+from langchain.tools import tool
+from typing import TypedDict, List, Dict, Any
+import json
+
+# API Configuration
+AMADEUS_API_KEY = os.getenv("AMADEUS_API_KEY")
+AMADEUS_SECRET = os.getenv("AMADEUS_SECRET")
+BOOKING_API_KEY = os.getenv("BOOKING_API_KEY")
+EVENTBRITE_TOKEN = os.getenv("EVENTBRITE_TOKEN")
+YELP_API_KEY = os.getenv("YELP_API_KEY")
+
+# Travel planning state
+class TravelState(TypedDict):
+    destination: str
+    dates: str
+    budget: str
+    flight_results: dict
+    hotel_results: dict
+    event_results: dict
+    restaurant_results: dict
+                    </code></pre>
+                </section>
+
+                <!-- Part 2: Amadeus Flight Tool -->
+                <section>
+                    <h3 style="font-size: 1.4em;">Step 2: Amadeus Flight Search Tool</h3>
+                    <div class="code-title" style="font-size: 0.9em;">Flight API with Error Handling</div>
+                    <pre style="font-size: 0.50em;"><code class="python">
+@tool
+def amadeus_flight_search(origin: str, destination: str, departure_date: str) -> Dict[str, Any]:
+    """Search flights using Amadeus API"""
+    try:
+        # Get access token
+        auth_url = "https://test.api.amadeus.com/v1/security/oauth2/token"
+        auth_data = {
+            "grant_type": "client_credentials",
+            "client_id": AMADEUS_API_KEY,
+            "client_secret": AMADEUS_SECRET
+        }
+        auth_response = requests.post(auth_url, data=auth_data)
+        auth_response.raise_for_status()
+        token = auth_response.json()["access_token"]
+
+        # Search flights
+        search_url = "https://test.api.amadeus.com/v2/shopping/flight-offers"
+        headers = {"Authorization": f"Bearer {token}"}
+        params = {
+            "originLocationCode": origin,
+            "destinationLocationCode": destination,
+            "departureDate": departure_date,
+            "adults": 1
+        }
+
+        response = requests.get(search_url, headers=headers, params=params)
+        response.raise_for_status()
+
+        return {
+            "status": "success",
+            "data": response.json()["data"][:5],  # Top 5 results
+            "currency": response.json()["meta"]["currency"]
+        }
+    except requests.exceptions.RequestException as e:
+        return {"status": "error", "message": f"Flight search failed: {str(e)}"}
+    except KeyError as e:
+        return {"status": "error", "message": f"Missing API response field: {str(e)}"}
+                    </code></pre>
+                </section>
+
+                <!-- Part 3: Booking.com Hotel Tool -->
+                <section>
+                    <h3 style="font-size: 1.4em;">Step 3: Booking.com Hotel Search Tool</h3>
+                    <div class="code-title" style="font-size: 0.9em;">Hotel API with Error Handling</div>
+                    <pre style="font-size: 0.50em;"><code class="python">
+@tool
+def booking_hotel_search(city: str, checkin_date: str, checkout_date: str) -> Dict[str, Any]:
+    """Search hotels using Booking.com API"""
+    try:
+        url = "https://booking-com.p.rapidapi.com/v1/hotels/search"
+        headers = {
+            "X-RapidAPI-Key": BOOKING_API_KEY,
+            "X-RapidAPI-Host": "booking-com.p.rapidapi.com"
+        }
+        params = {
+            "query": city,
+            "checkin_date": checkin_date,
+            "checkout_date": checkout_date,
+            "adults_number": 1,
+            "room_number": 1,
+            "filter_by_currency": "USD",
+            "order_by": "popularity"
+        }
+
+        response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status()
+        data = response.json()
+
+        hotels = []
+        for hotel in data.get("result", [])[:5]:  # Top 5 hotels
+            hotels.append({
+                "name": hotel.get("hotel_name"),
+                "price": hotel.get("min_total_price"),
+                "rating": hotel.get("review_score"),
+                "url": hotel.get("url")
+            })
+        return {"status": "success", "hotels": hotels}
+    except requests.exceptions.RequestException as e:
+        return {"status": "error", "message": f"Hotel search failed: {str(e)}"}
+    except (KeyError, TypeError) as e:
+        return {"status": "error", "message": f"Hotel data parsing error: {str(e)}"}
+                    </code></pre>
+                </section>
+
+                <!-- Part 4: Events & Restaurants Tools -->
+                <section>
+                    <h3 style="font-size: 1.2em;">Step 4: Events Search Tool</h3>
+                    <div class="code-title" style="font-size: 0.8em;">Eventbrite API</div>
+                    <pre style="font-size: 0.50em;"><code class="python">
+@tool
+def eventbrite_search(city: str, start_date: str, category: str = None) -> Dict[str, Any]:
+    """Search events using Eventbrite API"""
+    try:
+        url = "https://www.eventbriteapi.com/v3/events/search/"
+        headers = {"Authorization": f"Bearer {EVENTBRITE_TOKEN}"}
+        params = {"location.address": city, "start_date.range_start": f"{start_date}T00:00:00", "sort_by": "best"}
+        if category: params["categories"] = category
+        response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status()
+        events = [{"name": e["name"]["text"], "url": e["url"], "start_time": e["start"]["local"]}
+                 for e in response.json()["events"][:5]]
+        return {"status": "success", "events": events}
+    except Exception as e:
+        return {"status": "error", "message": f"Events search failed: {str(e)}"}
+                    </code></pre>
+                </section>
+
+                <!-- Part 5: Restaurant Search Tool -->
+                <section>
+                    <h3 style="font-size: 1.2em;">Step 5: Restaurant Search Tool</h3>
+                    <div class="code-title" style="font-size: 0.8em;">Yelp API</div>
+                    <pre style="font-size: 0.50em;"><code class="python">
+@tool
+def yelp_search(city: str, category: str = "restaurants", price: str = None) -> Dict[str, Any]:
+    """Search restaurants using Yelp API"""
+    try:
+        url = "https://api.yelp.com/v3/businesses/search"
+        headers = {"Authorization": f"Bearer {YELP_API_KEY}"}
+        params = {"location": city, "categories": category, "limit": 5, "sort_by": "rating"}
+        if price: params["price"] = price
+        response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status()
+        restaurants = [{"name": b["name"], "rating": b["rating"], "price": b.get("price", "N/A"),
+                      "cuisine": b.get("categories", [{}])[0].get("title", ""), "url": b["url"]}
+                     for b in response.json()["businesses"]]
+        return {"status": "success", "restaurants": restaurants}
+    except Exception as e:
+        return {"status": "error", "message": f"Restaurant search failed: {str(e)}"}
+                    </code></pre>
+                </section>
+
+                <!-- Part 6: Flight & Hotel Agents -->
+                <section>
+                    <h3 style="font-size: 1.2em;">Step 6: Flight & Hotel Agents</h3>
+                    <div class="code-title" style="font-size: 0.8em;">Specialized Agents with API Tools</div>
+                    <pre style="font-size: 0.50em;"><code class="python">
+# Initialize model and swarm
+model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+swarm = Swarm()
+# Flight search agent with Amadeus API
+flight_agent = Agent(
+    name="flight_specialist",
+    model=model,
+    system_prompt=(
+        "You are a flight specialist. Use amadeus_flight_search to find the best flights. "
+        "Always check for errors in API responses and provide clear flight options."
+    ),
+    tools=[amadeus_flight_search],
+    handoff_tools=[Command("transfer_to_hotel"), Command("transfer_to_coordinator")]
+)
+
+# Hotel search agent with Booking.com API
+hotel_agent = Agent(
+    name="hotel_specialist",
+    model=model,
+    system_prompt=(
+        "You are a hotel specialist. Use booking_hotel_search for accommodations. "
+        "Filter by budget and rating, handle API errors gracefully."
+    ),
+    tools=[booking_hotel_search],
+    handoff_tools=[Command("transfer_to_events"), Command("transfer_to_coordinator")]
+)
+                    </code></pre>
+                </section>
+
+                <!-- Part 6: Event & Restaurant Agents -->
+                <section>
+                    <h3>Step 6: Event & Restaurant Agents</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Complete Travel Research Team</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Local events agent with Eventbrite API
+event_agent = Agent(
+    name="event_specialist",
+    model=model,
+    system_prompt=(
+        "You are an events specialist. Use eventbrite_search to find local activities. "
+        "Focus on highly-rated events that match travel dates."
+    ),
+    tools=[eventbrite_search],
+    handoff_tools=[Command("transfer_to_restaurants"), Command("transfer_to_coordinator")]
+)
+
+# Restaurant agent with Yelp API
+restaurant_agent = Agent(
+    name="restaurant_specialist",
+    model=model,
+    system_prompt=(
+        "You are a dining specialist. Use yelp_search for restaurant recommendations. "
+        "Prioritize highly-rated restaurants with diverse cuisine options."
+    ),
+    tools=[yelp_search],
+    handoff_tools=[Command("transfer_to_coordinator")]
+)
+                    </code></pre>
+                </section>
+
+                <!-- Part 7: Swarm Coordination -->
+                <section>
+                    <h3>Step 7: Swarm Coordination & Execution</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Parallel Processing with Handoffs</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Travel coordinator agent
+coordinator_agent = Agent(
+    name="travel_coordinator",
+    model=model,
+    system_prompt=(
+        "You are a travel coordinator. Delegate tasks to specialists based on user needs. "
+        "Synthesize all results into a comprehensive travel itinerary."
+    ),
+    tools=[],
+    handoff_tools=[
+        Command("transfer_to_flight"),
+        Command("transfer_to_hotel"),
+        Command("transfer_to_events"),
+        Command("transfer_to_restaurants")
+    ]
+)
+# Register all agents in swarm
+swarm.add_agent(coordinator_agent)
+swarm.add_agent(flight_agent)
+swarm.add_agent(hotel_agent)
+swarm.add_agent(event_agent)
+swarm.add_agent(restaurant_agent)
+
+# Execute parallel travel planning
+result = swarm.run(
+    messages=[{"role": "user", "content": "Plan a 3-day trip to Paris, budget $2000"}],
+    active_agent="travel_coordinator"
+)
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Swarm automatically manages parallel execution and agent handoffs</p>
+                </section>
+
+                <!-- Parallelization Rule of Thumb -->
+                <section>
+                    <h3 style="color: var(--primary-color); font-size: 1.8em;">🎯 When to Use Parallelization</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.5em; border-radius: 10px; border: 2px solid var(--primary-color);">
+                        <div style="text-align: left; font-size: 1.1em; line-height: 1.4;">
+                            <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 1em;">Use this pattern when a workflow contains multiple independent operations that can run simultaneously:</p>
+                            <ul style="margin: 0; padding-left: 1.5em;">
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🔄 Data Processing:</span> Multiple datasets requiring separate analysis</li>
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🌐 Concurrent I/O:</span> API calls, database queries, file operations</li>
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🧩 Layered Future Synthesis:</span> Parallel research feeding into final decision</li>
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">⚡ Performance Critical:</span> Time-sensitive operations needing speed</li>
+                            </ul>
+                            <p style="color: #ff6b6b; font-weight: bold; margin-top: 1em; font-style: italic;">⚠️ Avoid for dependent tasks or sequential workflows</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Pattern 4: Reflection -->
+            <section>
+                <section>
+                    <h2>Pattern 4: Reflection</h2>
+                    <div class="pattern-section">
+                        <h3>Continuous Self-Improvement</h3>
+                        <p>Iterative critique and refinement cycles for enhanced output quality</p>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; margin: 1.5em 0; flex-wrap: wrap;">
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Generate
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Critique
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Refine
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Quality Check
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="display: flex; flex-direction: column; align-items: center; margin: 0.2em;">
+                            <div style="background: #ffeb3b; color: #000; padding: 0.4em 0.8em; border: 2px solid #333; border-radius: 6px; font-weight: bold; margin: 0.1em; font-size: 0.75em;">Iterate</div>
+                            <div style="background: #ffeb3b; color: #000; padding: 0.4em 0.8em; border: 2px solid #333; border-radius: 6px; font-weight: bold; margin: 0.1em; font-size: 0.75em;">Complete</div>
+                        </div>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Reflection Components</h4>
+                            <ul class="small-text">
+                                <li>Producer agent (generation)</li>
+                                <li>Critic agent (evaluation)</li>
+                                <li>Quality thresholds</li>
+                                <li>Iteration limits</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Quality Dimensions</h4>
+                            <ul class="small-text">
+                                <li>Accuracy and correctness</li>
+                                <li>Completeness and depth</li>
+                                <li>Clarity and readability</li>
+                                <li>Relevance to requirements</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 1: State Definition -->
+                <section>
+                    <h3>Step 1: Reflection State Schema</h3>
+                    <div class="code-title" style="font-size: 1.1em;">State Management for Iterative Improvement</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+from langgraph.graph import StateGraph, END
+from typing import TypedDict
+
+class ReflectionState(TypedDict):
+    task_description: str    # Original task/request
+    current_output: str      # Current generated content
+    critique: str           # Feedback from critic
+    quality_score: float    # Numeric quality assessment
+    iteration_count: int    # Current iteration number
+    max_iterations: int     # Maximum allowed iterations
+    approved: bool          # Whether output meets standards
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">State tracks the complete reflection cycle with quality metrics</p>
+                </section>
+
+                <!-- Part 2: Producer Agent -->
+                <section>
+                    <h3>Step 2: Producer Agent</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Content Generation & Improvement</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+def producer_agent(state: ReflectionState) -> ReflectionState:
+    """Generate or improve output based on feedback"""
+    if state["iteration_count"] == 0:
+        # Initial generation
+        output = generate_initial_response(state["task_description"])
+    else:
+        # Improvement based on critique
+        output = improve_response(
+            state["current_output"],
+            state["critique"],
+            state["task_description"]
+        )
+    return {
+        **state,
+        "current_output": output,
+        "iteration_count": state["iteration_count"] + 1
+    }
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Producer generates initial content or improves based on critique</p>
+                </section>
+
+                <!-- Part 3: Critic Agent -->
+                <section>
+                    <h3>Step 3: Critic Agent</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Quality Evaluation & Feedback</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+def critic_agent(state: ReflectionState) -> ReflectionState:
+    """Evaluate current output and provide detailed feedback"""
+    evaluation_criteria = {
+        "accuracy": evaluate_accuracy(state["current_output"], state["task_description"]),
+        "completeness": evaluate_completeness(state["current_output"], state["task_description"]),
+        "clarity": evaluate_clarity(state["current_output"]),
+        "relevance": evaluate_relevance(state["current_output"], state["task_description"])
+    }
+    # Calculate overall quality score
+    quality_score = sum(evaluation_criteria.values()) / len(evaluation_criteria)
+    critique = generate_critique(evaluation_criteria, state["current_output"])
+    approved = quality_score >= 0.8  # 80% threshold
+    return {**state, "critique": critique, "quality_score": quality_score, "approved": approved}
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Critic evaluates on multiple criteria and provides actionable feedback</p>
+                </section>
+
+                <!-- Part 4: Loop Control & Workflow -->
+                <section>
+                    <h3>Step 4: Loop Control & Workflow</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Conditional Flow & Graph Construction</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+def should_continue_reflection(state: ReflectionState) -> str:
+    """Determine if reflection should continue"""
+    if state["approved"]:
+        return "complete"
+    elif state["iteration_count"] >= state["max_iterations"]:
+        return "complete"  # Max iterations reached
+    else:
+        return "continue"
+# Build reflection workflow
+workflow = StateGraph(ReflectionState)
+workflow.add_node("producer", producer_agent)
+workflow.add_node("critic", critic_agent)
+workflow.add_edge("producer", "critic")
+workflow.add_conditional_edges("critic", should_continue_reflection,
+    {"continue": "producer", "complete": END})
+workflow.set_entry_point("producer")
+reflection_system = workflow.compile()
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Conditional edges enable iterative improvement until quality threshold is met</p>
+                </section>
+
+                <!-- Reflection Rule of Thumb -->
+                <section>
+                    <h3 style="color: var(--primary-color); font-size: 1.8em;">🎯 When to Use Reflection</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.5em; border-radius: 10px; border: 2px solid var(--primary-color);">
+                        <div style="text-align: left; font-size: 1.0em; line-height: 1.4;">
+                            <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 1em;">Use when quality, accuracy, and detail are more important than speed and cost:</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; font-size: 0.9em;">
+                                <div>
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.3em 0;">📝 Polished Content Creation</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Long-form articles, reports, documentation requiring high quality</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">🛠️ Code Writing & Debugging</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Complex algorithms, production code, critical system components</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">📋 Detailed Planning</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Strategic plans, project specifications, architectural designs</p>
+                                </div>
+                                <div>
+                                    <p style="color: #4ecdc4; font-weight: bold; margin: 0.3em 0;">🔍 Use Separate Critic When:</p>
+                                    <ul style="margin: 0.2em 0; padding-left: 1.2em; font-size: 0.8em;">
+                                        <li style="margin: 0.2em 0;">High objectivity required</li>
+                                        <li style="margin: 0.2em 0;">Specialized evaluation needed</li>
+                                        <li style="margin: 0.2em 0;">Domain expertise differs from producer</li>
+                                        <li style="margin: 0.2em 0;">Bias reduction critical</li>
+                                    </ul>
+
+                                    <p style="color: #ff6b6b; font-weight: bold; margin: 0.5em 0 0.3em 0;">⚠️ Trade-offs:</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Higher latency, increased token costs, more complex workflows</p>
+                                </div>
+                            </div>
+                            <p style="color: #ffeb3b; font-weight: bold; margin-top: 1em; font-style: italic; font-size: 0.9em;">💡 Quality over speed - iterative refinement until excellence is achieved</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Pattern 5: Tool Use -->
+            <section>
+                <section>
+                    <h2>Pattern 5: Tool Use</h2>
+                    <div class="pattern-section">
+                        <h3>Real-World Integration</h3>
+                        <p>Secure, monitored access to external systems and real-time data sources</p>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; margin: 1.5em 0; flex-wrap: wrap;">
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.15em; font-size: 0.8em;">
+                            Query
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.1em; margin: 0 0.15em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.15em; font-size: 0.8em;">
+                            Tool Selection
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.1em; margin: 0 0.15em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.15em; font-size: 0.8em;">
+                            API Call
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.1em; margin: 0 0.15em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.15em; font-size: 0.8em;">
+                            Validation
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.1em; margin: 0 0.15em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.15em; font-size: 0.8em;">
+                            Integration
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.1em; margin: 0 0.15em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.15em; font-size: 0.8em;">
+                            Response
+                        </div>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Tool Categories</h4>
+                            <ul class="small-text">
+                                <li>Data retrieval APIs</li>
+                                <li>Computational tools</li>
+                                <li>Communication systems</li>
+                                <li>Business applications</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Security Requirements</h4>
+                            <ul class="small-text">
+                                <li>Input validation</li>
+                                <li>Rate limiting</li>
+                                <li>Error handling</li>
+                                <li>Audit logging</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Part 1: Tool Definition & Setup -->
+                <section>
+                    <h3>Step 1: Tool Definition & Configuration</h3>
+                    <div class="code-title" style="font-size: 1.1em;">LangGraph Stock Analysis Tool</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+from langgraph.graph import StateGraph, END
+from langchain_core.tools import tool
+from langchain_openai import ChatOpenAI
+from typing import TypedDict, List
+import logging
+import os
+# Configure logging for debugging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# Refactored Tool: Returns Clean Data
+@tool("Stock Price Lookup Tool")
+def get_stock_price(ticker: str) -> float:
+    """Fetches simulated stock price for a given ticker symbol.
+    Returns price as float. Raises ValueError if ticker not found."""
+    logging.info(f"Tool Call: get_stock_price for ticker '{ticker}'")
+    simulated_prices = {"AAPL": 178.15, "GOOGL": 1750.30, "MSFT": 425.50}
+    price = simulated_prices.get(ticker.upper())
+    if price is not None:
+        return price
+    else:
+        raise ValueError(f"Price for ticker '{ticker.upper()}' not found.")
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Clean tool interface with proper error handling and logging</p>
+                </section>
+
+                <!-- Part 2: State Management -->
+                <section>
+                    <h3>Step 2: State Schema & Agent Setup</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Financial Analysis State & Agent Configuration</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+class FinancialAnalysisState(TypedDict):
+    user_request: str        # Original analysis request
+    ticker: str             # Stock ticker to analyze
+    stock_price: float      # Retrieved stock price
+    analysis_result: str    # Final analysis output
+    error_message: str      # Error handling
+
+# Initialize LLM with tools
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+llm_with_tools = llm.bind_tools([get_stock_price])
+
+def financial_analyst_agent(state: FinancialAnalysisState) -> FinancialAnalysisState:
+    """Senior Financial Analyst agent with tool access"""
+    system_prompt = """You are a Senior Financial Analyst.
+    Use the Stock Price Lookup Tool to find stock prices and provide clear analysis.
+    If a ticker is not found, report that clearly."""
+
+    user_message = f"What is the stock price for {state['ticker']}? Use the tool to look it up."
+    response = llm_with_tools.invoke([{"role": "system", "content": system_prompt},
+                                     {"role": "user", "content": user_message}])
+    return {"analysis_result": response.content}
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Agent with specialized financial analysis role and tool binding</p>
+                </section>
+
+                <!-- Part 3: Workflow Construction & Execution -->
+                <section>
+                    <h3>Step 3: Workflow Construction & Execution</h3>
+                    <div class="code-title" style="font-size: 1.1em;">LangGraph Financial Analysis Workflow</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Build the financial analysis workflow
+workflow = StateGraph(FinancialAnalysisState)
+workflow.add_node("financial_analyst", financial_analyst_agent)
+workflow.set_entry_point("financial_analyst")
+workflow.add_edge("financial_analyst", END)
+
+# Compile the workflow
+financial_analysis_system = workflow.compile()
+
+def main():
+    """Main execution function with error handling"""
+    # Check for API key
+    if not os.environ.get("OPENAI_API_KEY"):
+        print("ERROR: OPENAI_API_KEY environment variable not set.")
+        return
+
+    print("## Starting Financial Analysis...")
+    # Execute analysis for AAPL
+    result = financial_analysis_system.invoke({
+        "user_request": "Analyze Apple stock price",
+        "ticker": "AAPL"
+    })
+    print(f"Analysis Result: {result['analysis_result']}")
+
+if __name__ == "__main__":
+    main()
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Complete LangGraph workflow with proper error handling and execution</p>
+                </section>
+
+                <!-- Tool Use Rule of Thumb -->
+                <section>
+                    <h3 style="color: var(--primary-color); font-size: 1.8em;">🎯 When to Use Tool Pattern</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.5em; border-radius: 10px; border: 2px solid var(--primary-color);">
+                        <div style="text-align: left; font-size: 1.0em; line-height: 1.4;">
+                            <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 1em;">Use whenever agents need to break out of LLM's internal knowledge and interact with the outside world:</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; font-size: 0.9em;">
+                                <div>
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.3em 0;">🌐 Real-time Data Access</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Weather, stock prices, news feeds, live APIs</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">🏢 Private Information</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Company databases, proprietary data, internal systems</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">🧮 Precise Calculations</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Mathematical operations, financial computations</p>
+                                </div>
+                                <div>
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.3em 0;">⚙️ System Actions</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Send emails, control IoT devices, trigger workflows</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">💻 Code Execution</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Run scripts, validate syntax, perform testing</p>
+
+                                    <p style="color: #4ecdc4; font-weight: bold; margin: 0.5em 0 0.3em 0;">🔌 MCP Protocol</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Model Context Protocol facilitates secure tool integration</p>
+                                </div>
+                            </div>
+                            <p style="color: #ff6b6b; font-weight: bold; margin-top: 1em; font-style: italic; font-size: 0.9em;">⚠️ Essential for bridging AI capabilities with real-world systems and data</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Pattern 6: Learning -->
+            <section>
+                <section>
+                    <h2>Pattern 6: Learning & Adaptation</h2>
+                    <div class="pattern-section">
+                        <h3>Autonomous Evolution</h3>
+                        <p>Continuous adaptation and self-improvement through experience and feedback</p>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; margin: 1.5em 0; flex-wrap: wrap;">
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Experience
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Memory
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Pattern Analysis
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Evolution
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Improved Performance
+                        </div>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>OpenEvolve Key Features</h4>
+                            <ul class="small-text">
+                                <li>Autonomous algorithm discovery</li>
+                                <li>MAP-Elites evolutionary algorithm</li>
+                                <li>Multi-language support</li>
+                                <li>Quality-diversity evolution</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Evolution Capabilities</h4>
+                            <ul class="small-text">
+                                <li>LLM-powered code generation</li>
+                                <li>Island-based parallel evolution</li>
+                                <li>Intelligent ensemble selection</li>
+                                <li>Scientific reproducibility</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- OpenEvolve Framework Overview -->
+                <section>
+                    <h3>OpenEvolve Framework</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.2em; border-radius: 8px;">
+                        <p style="font-size: 0.9em; line-height: 1.4; margin: 0;">
+                            <span style="color: var(--primary-color); font-weight: bold;">OpenEvolve</span> turns LLMs into autonomous code optimizers that discover breakthrough algorithms.
+                            It uses evolutionary computation to automatically improve prompts, code, and algorithms across multiple domains.
+                        </p>
+                        <ul style="font-size: 0.8em; margin: 0.5em 0; padding-left: 1.5em;">
+                            <li><span style="color: #ffeb3b;">MAP-Elites Algorithm:</span> Quality-diversity evolution for diverse solutions</li>
+                            <li><span style="color: #ffeb3b;">LLM Integration:</span> Uses AI to generate and mutate solutions</li>
+                            <li><span style="color: #ffeb3b;">Multi-Objective:</span> Optimizes performance across multiple dimensions</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Part 1: Configuration Setup -->
+                <section>
+                    <h3>Step 1: Configuration Setup</h3>
+                    <div class="code-title" style="font-size: 1.1em;">OpenEvolve Evolution Parameters</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+import yaml
+from typing import Dict, List, Any
+
+# Configuration for evolutionary prompt optimization
+config = {
+    "llm": {
+        "models": [
+            {"name": "qwen/qwen3-8b", "weight": 1.0, "temperature": 0.7},
+            {"name": "gpt-4o-mini", "weight": 0.8, "temperature": 0.5}
+        ]
+    },
+    "evaluator": {
+        "cascade_evaluation": True,
+        "cascade_thresholds": [0.9],
+        "use_llm_feedback": True,
+        "evaluation_samples": 50
+    },
+    "evolution": {
+        "population_size": 20,
+        "generations": 10,
+        "mutation_rate": 0.3,
+        "selection_pressure": 0.7
+    }
+}
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Multi-model configuration with evolutionary parameters and cascade evaluation</p>
+                </section>
+
+                <!-- Part 2: Prompt Evolution Model -->
+                <section>
+                    <h3>Step 2: Prompt Evolution Model</h3>
+                    <div class="code-title" style="font-size: 1.1em;">PromptEvolution Class Implementation</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+class PromptEvolution:
+    def __init__(self, config: Dict[str, Any]):
+        self.config = config
+        self.population = []
+        self.fitness_scores = {}
+        self.generation_history = []
+
+    def generate_mutations(self, prompt: str, num_mutations: int = 3) -> List[str]:
+        """Generate prompt mutations using LLM"""
+        mutation_prompt = f"""
+        Improve this prompt for better performance: "{prompt}"
+        Generate {num_mutations} variations that are:
+        1. More specific and clear
+        2. Better structured
+        3. More likely to produce accurate results
+        """
+        # LLM call to generate mutations
+        mutations = self.llm_generate(mutation_prompt)
+        return mutations
+
+    def evaluate_prompt(self, prompt: str, dataset: List[Dict]) -> float:
+        """Evaluate prompt performance on dataset"""
+        correct = 0
+        total = len(dataset)
+        for sample in dataset:
+            response = self.llm_query(prompt, sample["input"])
+            if self.is_correct(response, sample["expected"]):
+                correct += 1
+        return correct / total
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Core evolution class with mutation generation and fitness evaluation methods</p>
+                </section>
+
+                <!-- Part 2: Evolution Process -->
+                <section>
+                    <h3>Step 2: Evolutionary Process</h3>
+                    <div class="code-title" style="font-size: 1.1em;">MAP-Elites Algorithm Implementation</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+def evolve_prompts(self, baseline_prompt: str, dataset: List[Dict]) -> str:
+    """Main evolutionary optimization loop"""
+    # Initialize population with baseline prompt
+    self.population = [baseline_prompt]
+    best_prompt = baseline_prompt
+    best_score = 0.0
+
+    for generation in range(self.config["evolution"]["generations"]):
+        print(f"Generation {generation + 1}")
+
+        # Generate mutations using LLM
+        new_prompts = []
+        for prompt in self.population:
+            mutations = self.generate_mutations(prompt)
+            new_prompts.extend(mutations)
+
+        # Evaluate all prompts
+        for prompt in new_prompts:
+            score = self.evaluate_prompt(prompt, dataset)
+            self.fitness_scores[prompt] = score
+
+            if score > best_score:
+                best_score = score
+                best_prompt = prompt
+
+        # Selection for next generation
+        self.population = self.select_best_prompts(new_prompts)
+        print(f"Best score: {best_score:.3f}")
+
+    return best_prompt
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Iterative improvement using LLM-generated mutations and performance evaluation</p>
+                </section>
+
+                <!-- Part 3: Results & Performance -->
+                <section>
+                    <h3>Step 3: Optimization Results</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Performance Improvements Achieved</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Example Results from OpenEvolve Optimization
+results = {
+    "HotpotQA": {
+        "baseline_accuracy": 77.93,
+        "optimized_accuracy": 88.62,
+        "improvement": "+13.7%"
+    },
+    "empty_responses": {
+        "baseline": "12.3%",
+        "optimized": "7.6%",
+        "reduction": "-38%"
+    },
+    "optimization_time": "2.5 hours",
+    "prompt_variations_tested": 200
+}
+
+def demonstrate_evolution():
+    """Demonstrate prompt evolution results"""
+    baseline = "Answer the question based on the context."
+
+    optimized = """Analyze the given context carefully and provide a comprehensive answer.
+    Consider multiple perspectives and ensure accuracy. If information is insufficient,
+    state limitations clearly."""
+
+    print("Baseline Prompt:", baseline)
+    print("Optimized Prompt:", optimized)
+    print(f"Performance Gain: {results['HotpotQA']['improvement']}")
+
+    return optimized
+
+demonstrate_evolution()
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Measurable improvements across benchmarks with autonomous optimization</p>
+                </section>
+
+                <!-- Learning & Adaptation Rule of Thumb -->
+                <section>
+                    <h3 style="color: var(--primary-color); font-size: 1.8em;">🎯 When to Use Learning & Adaptation</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.5em; border-radius: 10px; border: 2px solid var(--primary-color);">
+                        <div style="text-align: left; font-size: 1.0em; line-height: 1.4;">
+                            <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 1em;">Use when building agents that must operate in dynamic, uncertain, or evolving environments:</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; font-size: 0.9em;">
+                                <div>
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.3em 0;">🌍 Dynamic Environments</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Changing business rules, market conditions, user preferences</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">🎯 Personalization Required</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">User-specific adaptations, custom recommendations</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">📈 Performance Improvement</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Continuous optimization, efficiency gains over time</p>
+                                </div>
+                                <div>
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.3em 0;">🆕 Novel Situations</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Handling unprecedented scenarios autonomously</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">🔄 Uncertain Conditions</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Incomplete information, changing requirements</p>
+
+                                    <p style="color: #ffeb3b; font-weight: bold; margin: 0.5em 0 0.3em 0;">🧠 Autonomous Operation</p>
+                                    <p style="margin: 0.2em 0; font-size: 0.8em;">Self-improving systems with minimal human intervention</p>
+                                </div>
+                            </div>
+                            <p style="color: #ff6b6b; font-weight: bold; margin-top: 1em; font-style: italic; font-size: 0.9em;">⚠️ Essential for long-running systems that must evolve with their environment</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Pattern 7: Human-in-the-Loop -->
+            <section>
+                <section>
+                    <h2>Pattern 7: Human-in-the-Loop</h2>
+                    <div class="pattern-section">
+                        <h3>AI-Human Collaboration</h3>
+                        <p>Strategic human involvement for optimal decision-making and oversight</p>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; margin: 1.5em 0; flex-wrap: wrap;">
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            AI Analysis
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Confidence Check
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="display: flex; flex-direction: column; align-items: center; margin: 0.2em;">
+                            <div style="background: #ffeb3b; color: #000; padding: 0.4em 0.8em; border: 2px solid #333; border-radius: 6px; font-weight: bold; margin: 0.1em; font-size: 0.75em;">Autonomous</div>
+                            <div style="background: #ffeb3b; color: #000; padding: 0.4em 0.8em; border: 2px solid #333; border-radius: 6px; font-weight: bold; margin: 0.1em; font-size: 0.75em;">Human Escalation</div>
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                            Validated Response
+                        </div>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Escalation Triggers</h4>
+                            <ul class="small-text">
+                                <li>Low confidence scores</li>
+                                <li>High-stakes decisions</li>
+                                <li>Regulatory requirements</li>
+                                <li>User frustration detection</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Human Expertise Areas</h4>
+                            <ul class="small-text">
+                                <li>Complex ethical decisions</li>
+                                <li>Creative problem solving</li>
+                                <li>Emotional intelligence</li>
+                                <li>Domain-specific knowledge</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Step 1: Data Models and Escalation Levels -->
+                <section>
+                    <h3>Step 1: Data Models & Escalation Levels</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Human-AI Collaboration Framework Setup</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+from enum import Enum
+from pydantic import BaseModel
+from typing import List, Dict, Any, Optional
+
+class EscalationLevel(Enum):
+    NONE = "none"
+    ADVISORY = "advisory"  # Human provides input, AI decides
+    COLLABORATIVE = "collaborative"  # Joint decision making
+    HUMAN_CONTROL = "human_control"  # Human makes final decision
+
+class EscalationRequest(BaseModel):
+    request_id: str
+    user_query: str
+    ai_response: str
+    confidence_score: float
+    risk_level: str
+    domain: str
+    escalation_reason: str
+    suggested_experts: List[str]
+    context: Dict[str, Any]
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Pydantic models ensure type safety and data validation for escalation requests</p>
+                </section>
+
+                <!-- Step 2: Manager Configuration -->
+                <section>
+                    <h3>Step 2: Manager Configuration & Expert Registry</h3>
+                    <div class="code-title" style="font-size: 1.1em;">HumanInTheLoopManager Initialization</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+class HumanInTheLoopManager:
+    """Manages human escalation and collaboration patterns"""
+
+    def __init__(self):
+        self.escalation_rules = {
+            "confidence_threshold": 0.75,
+            "high_stakes_domains": ["medical", "legal", "financial", "safety"],
+            "sensitive_topics": ["personal_data", "privacy", "discrimination"]
+        }
+
+        self.expert_registry = {
+            "medical": ["dr_smith", "nurse_johnson"],
+            "legal": ["lawyer_brown", "paralegal_davis"],
+            "financial": ["advisor_wilson", "analyst_taylor"]
+        }
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Configurable thresholds and expert mapping for domain-specific escalation</p>
+                </section>
+
+                <!-- Step 3: Escalation Logic -->
+                <section>
+                    <h3>Step 3: Escalation Decision Logic</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Smart Escalation Algorithm</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+    async def should_escalate(self,
+                            request: str,
+                            ai_response: str,
+                            confidence: float,
+                            context: Dict[str, Any]) -> Optional[EscalationRequest]:
+        """Determine if human escalation is needed"""
+
+        escalation_reasons = []
+        domain = self._classify_domain(request)
+        risk_level = self._assess_risk_level(request, domain, context)
+
+        # Low confidence check
+        if confidence < self.escalation_rules["confidence_threshold"]:
+            escalation_reasons.append(f"Low confidence: {confidence:.2f}")
+
+        # High stakes domain check
+        if domain in self.escalation_rules["high_stakes_domains"]:
+            escalation_reasons.append(f"High-stakes domain: {domain}")
+
+        # Sensitive topic check
+        if self._contains_sensitive_topics(request):
+            escalation_reasons.append("Contains sensitive topics")
+
+        if escalation_reasons:
+            return EscalationRequest(
+                request_id=self._generate_request_id(),
+                user_query=request,
+                ai_response=ai_response,
+                confidence_score=confidence,
+                risk_level=risk_level,
+                domain=domain,
+                escalation_reason="; ".join(escalation_reasons),
+                suggested_experts=self.expert_registry.get(domain, []),
+                context=context
+            )
+
+        return None
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Multi-criteria escalation logic with confidence, domain, and sensitivity checks</p>
+                </section>
+
+                <!-- Human-in-the-Loop Rule of Thumb -->
+                <section>
+                    <h3 style="color: var(--primary-color); font-size: 1.8em;">🎯 When to Use Human-in-the-Loop</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.5em; border-radius: 10px; border: 2px solid var(--primary-color);">
+                        <div style="text-align: left; font-size: 1.0em; line-height: 1.4;">
+                            <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 1em;">Use when human expertise, oversight, or approval is essential for critical operations:</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; font-size: 0.9em;">
+                                <div>
+                                    <ul style="margin: 0; padding-left: 1.5em;">
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🏥 High-Stakes Decisions:</span> Medical diagnosis, legal advice, financial planning</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">⚖️ Ethical Oversight:</span> Content moderation, hiring decisions, policy enforcement</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🔒 Compliance Requirements:</span> Regulatory approval, audit trails, legal documentation</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🎯 Domain Expertise:</span> Specialized knowledge validation, creative direction</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <ul style="margin: 0; padding-left: 1.5em;">
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🚨 Edge Cases:</span> Handling unusual or unprecedented situations</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🔄 Continuous Learning:</span> Collecting human feedback for model improvement</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🎭 Creative Collaboration:</span> Art direction, brand strategy, storytelling</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">⚡ Real-Time Adaptation:</span> Dynamic strategy adjustment based on changing conditions</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Pattern 8: A2A Communication -->
+            <section>
+                <section>
+                    <h2>Pattern 8: A2A Communication</h2>
+                    <div class="pattern-section">
+                        <h3>Agent-to-Agent Protocol (A2A)</h3>
+                        <p>Open standard for communication between independent AI agent systems across frameworks, languages, and vendors</p>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; margin: 1.5em 0; flex-wrap: wrap;">
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.15em; font-size: 0.8em;">
+                            Agent Discovery
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.1em; margin: 0 0.15em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.15em; font-size: 0.8em;">
+                            Agent Card
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.1em; margin: 0 0.15em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.15em; font-size: 0.8em;">
+                            HTTP Communication
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.1em; margin: 0 0.15em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.15em; font-size: 0.8em;">
+                            Task Coordination
+                        </div>
+                        <div style="color: var(--primary-color); font-size: 1.1em; margin: 0 0.15em;">→</div>
+                        <div style="background: #ffeb3b; color: #000; padding: 0.5em 0.8em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.15em; font-size: 0.8em;">
+                            Result Exchange
+                        </div>
+                    </div>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>Core Components</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Agent Cards:</span> JSON metadata for capabilities & identity</li>
+                                <li><span class="highlight">Tasks:</span> Stateful units of work with unique IDs</li>
+                                <li><span class="highlight">Messages:</span> Communication turns between agents</li>
+                                <li><span class="highlight">Artifacts:</span> Outputs generated during execution</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Transport Protocols</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">JSON-RPC 2.0:</span> Primary messaging protocol</li>
+                                <li><span class="highlight">gRPC:</span> High-performance binary protocol</li>
+                                <li><span class="highlight">REST/HTTP+JSON:</span> Simple web-based communication</li>
+                                <li><span class="highlight">SSE:</span> Server-Sent Events for streaming</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- A2A Sequence Diagram Overview -->
+                <section>
+                    <h3>A2A Session Example: Multi-Agent Weather Query</h3>
+                    <div class="code-title" style="font-size: 1.1em;">A2A Protocol Sequence Diagram</div>
+                    <div style="margin: 1em 0; background: #1a1a1a; border-radius: 10px; border: 2px solid var(--primary-color); padding: 1.5em;">
+                        <svg width="100%" height="400" viewBox="0 0 800 400" style="background: #1a1a1a;">
+                            <!-- Participants -->
+                            <text x="80" y="30" fill="#42affa" font-size="16" font-weight="bold" text-anchor="middle">Client</text>
+                            <text x="250" y="30" fill="#42affa" font-size="16" font-weight="bold" text-anchor="middle">Registry</text>
+                            <text x="420" y="30" fill="#42affa" font-size="16" font-weight="bold" text-anchor="middle">WeatherAgent</text>
+                            <text x="620" y="30" fill="#42affa" font-size="16" font-weight="bold" text-anchor="middle">LocationAgent</text>
+
+                            <!-- Lifelines -->
+                            <line x1="80" y1="40" x2="80" y2="380" stroke="#42affa" stroke-width="2" stroke-dasharray="5,5"/>
+                            <line x1="250" y1="40" x2="250" y2="380" stroke="#42affa" stroke-width="2" stroke-dasharray="5,5"/>
+                            <line x1="420" y1="40" x2="420" y2="380" stroke="#42affa" stroke-width="2" stroke-dasharray="5,5"/>
+                            <line x1="620" y1="40" x2="620" y2="380" stroke="#42affa" stroke-width="2" stroke-dasharray="5,5"/>
+
+                            <!-- Messages -->
+                            <!-- discover() -->
+                            <line x1="80" y1="70" x2="250" y2="70" stroke="#ffeb3b" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            <text x="165" y="65" fill="#ffffff" font-size="13">discover()</text>
+
+                            <!-- agent_cards[] -->
+                            <line x1="250" y1="100" x2="80" y2="100" stroke="#ffeb3b" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+                            <text x="165" y="95" fill="#ffffff" font-size="13">agent_cards[]</text>
+
+                            <!-- create_task() -->
+                            <line x1="80" y1="140" x2="420" y2="140" stroke="#ffeb3b" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            <text x="250" y="135" fill="#ffffff" font-size="13">create_task("weather in Tokyo")</text>
+
+                            <!-- resolve_location() -->
+                            <line x1="420" y1="180" x2="620" y2="180" stroke="#ffeb3b" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            <text x="520" y="175" fill="#ffffff" font-size="13">resolve_location("Tokyo")</text>
+
+                            <!-- coordinates response -->
+                            <line x1="620" y1="210" x2="420" y2="210" stroke="#ffeb3b" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+                            <text x="520" y="205" fill="#ffffff" font-size="13">{lat: 35.6762, lon: 139.6503}</text>
+
+                            <!-- self call -->
+                            <path d="M 420 250 Q 450 250 450 275 Q 450 300 420 300" stroke="#ffeb3b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                            <text x="460" y="275" fill="#ffffff" font-size="13">get_weather(coordinates)</text>
+
+                            <!-- task result -->
+                            <line x1="420" y1="330" x2="80" y2="330" stroke="#ffeb3b" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+                            <text x="250" y="325" fill="#ffffff" font-size="13">task_result: "Tokyo: 22°C, sunny"</text>
+
+                            <!-- stream_updates() -->
+                            <line x1="80" y1="360" x2="420" y2="360" stroke="#ffeb3b" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            <text x="250" y="355" fill="#ffffff" font-size="13">stream_updates() via SSE</text>
+
+                            <!-- Arrow marker definition -->
+                            <defs>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#ffeb3b"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+                </section>
+
+                <!-- A2A Implementation Guide -->
+                <section>
+                    <h3>A2A Implementation Guide</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.5em; border-radius: 10px; border: 2px solid var(--primary-color);">
+                        <div style="text-align: left; font-size: 1.0em; line-height: 1.4;">
+                            <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 1em;">💡 Rule of Thumb: Build A2A agents step-by-step</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; font-size: 0.9em;">
+                                <div>
+                                    <ul style="margin: 0; padding-left: 1.5em;">
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">📋 Start with Agent Cards:</span> Define capabilities and endpoints</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🔌 JSON-RPC Protocol:</span> Implement standard messaging format</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🏗️ Starlette Framework:</span> Build lightweight HTTP services</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <ul style="margin: 0; padding-left: 1.5em;">
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🌐 Real APIs:</span> Integrate production-ready external services</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🔄 Multi-Agent:</span> Deploy agents on separate ports</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">✅ Test & Scale:</span> Validate with real data flows</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Step 1A: Weather Agent Card -->
+                <section>
+                    <h3>Step 1A: Weather Agent Card</h3>
+                    <div class="code-title" style="font-size: 1.1em;">OpenWeatherMap One Call API Agent</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Weather Agent Card - OpenWeatherMap One Call API 3.0
+weather_agent_card = {
+    "name": "OpenWeatherAgent",
+    "description": "Real-time weather data using OpenWeatherMap One Call API 3.0",
+    "url": "http://localhost:8001/a2a",
+    "version": "1.0.0",
+    "capabilities": {
+        "streaming": True,
+        "pushNotifications": True,
+        "stateTransitionHistory": True
+    },
+    "skills": [
+        {
+            "id": "get_weather_data",
+            "name": "Get Weather Data",
+            "description": "Current weather, hourly/daily forecasts using coordinates",
+            "inputModes": ["text"],
+            "outputModes": ["text", "json"],
+            "examples": ["Get weather for lat=40.7128, lon=-74.0060"],
+            "tags": ["weather", "forecast", "openweathermap"]
+        }
+    ]
+}
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Weather agent with streaming capabilities and comprehensive forecast data</p>
+                </section>
+
+                <!-- Step 1B: Location Agent Card -->
+                <section>
+                    <h3>Step 1B: Location Agent Card</h3>
+                    <div class="code-title" style="font-size: 1.1em;">OpenWeatherMap Geocoding Agent</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Location Agent Card - OpenWeatherMap Geocoding API
+location_agent_card = {
+    "name": "GeocodingAgent",
+    "description": "Location resolution using OpenWeatherMap Geocoding API",
+    "url": "http://localhost:8002/a2a",
+    "version": "1.0.0",
+    "capabilities": {
+        "streaming": False,
+        "pushNotifications": False,
+        "stateTransitionHistory": True
+    },
+    "skills": [
+        {
+            "id": "geocode_location",
+            "name": "Geocode Location",
+            "description": "Convert city names to coordinates (lat/lon)",
+            "inputModes": ["text"],
+            "outputModes": ["json"],
+            "examples": ["Tokyo", "New York, NY, US"],
+            "tags": ["geocoding", "coordinates", "location"]
+        }
+    ]
+}
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Geocoding agent for location resolution with coordinate extraction</p>
+                </section>
+
+                <!-- Rule of Thumb: Agent Cards -->
+                <section>
+                    <h3>💡 Agent Cards Best Practices</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.5em; border-radius: 10px; border: 2px solid var(--primary-color);">
+                        <div style="text-align: left; font-size: 1.0em; line-height: 1.4;">
+                            <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 1em;">Design agent cards for clear capability discovery and communication</p>
+                            <ul style="margin: 0; padding-left: 1.5em; font-size: 0.9em;">
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🎯 Specific Skills:</span> Define precise, focused capabilities with clear examples</li>
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🔗 Real Endpoints:</span> Use actual service URLs for production readiness</li>
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">📊 Capability Flags:</span> Accurately reflect streaming, notifications, state management</li>
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🏷️ Semantic Tags:</span> Enable intelligent agent discovery and routing</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Step 2A: Geocoding Request Message -->
+                <section>
+                    <h3>Step 2A: Geocoding Request Message</h3>
+                    <div class="code-title" style="font-size: 1.1em;">A2A JSON-RPC Request to Location Agent</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Geocoding Request to Location Agent
+geocoding_request = {
+    "jsonrpc": "2.0",
+    "id": "geo-001",
+    "method": "sendTask",
+    "params": {
+        "id": "task-geocode-tokyo",
+        "sessionId": "weather-session-001",
+        "message": {
+            "role": "user",
+            "parts": [
+                {
+                    "type": "text",
+                    "text": "Tokyo, Japan"
+                }
+            ]
+        },
+        "skill_id": "geocode_location",
+        "acceptedOutputModes": ["application/json"]
+    }
+}
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">JSON-RPC 2.0 request targeting geocoding skill for location resolution</p>
+                </section>
+
+                <!-- Step 2B: Weather Request Message -->
+                <section>
+                    <h3>Step 2B: Weather Request Message</h3>
+                    <div class="code-title" style="font-size: 1.1em;">A2A JSON-RPC Request to Weather Agent</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Weather Request to Weather Agent
+weather_request = {
+    "jsonrpc": "2.0",
+    "id": "weather-001",
+    "method": "sendTask",
+    "params": {
+        "id": "task-weather-tokyo",
+        "sessionId": "weather-session-001",
+        "message": {
+            "role": "user",
+            "parts": [
+                {
+                    "type": "text",
+                    "text": "Get current weather for coordinates: lat=35.6762, lon=139.6503"
+                }
+            ]
+        },
+        "skill_id": "get_weather_data",
+        "acceptedOutputModes": ["application/json", "text/plain"]
+    }
+}
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">JSON-RPC 2.0 request targeting weather skill with coordinate-based query</p>
+                </section>
+
+                <!-- Rule of Thumb: JSON-RPC Messages -->
+                <section>
+                    <h3>💡 JSON-RPC 2.0 Message Best Practices</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.5em; border-radius: 10px; border: 2px solid var(--primary-color);">
+                        <div style="text-align: left; font-size: 1.0em; line-height: 1.4;">
+                            <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 1em;">Structure A2A messages for clear task routing and state management</p>
+                            <ul style="margin: 0; padding-left: 1.5em; font-size: 0.9em;">
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🆔 Unique IDs:</span> Use distinct task and request IDs for tracking</li>
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🎯 Skill Targeting:</span> Specify exact skill_id for precise agent capability</li>
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🔄 Session Management:</span> Maintain consistent sessionId across related requests</li>
+                                <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">📋 Output Modes:</span> Define accepted response formats for flexibility</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Step 3A: Location Agent Setup -->
+                <section>
+                    <h3>Step 3A: Location Agent Setup</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Starlette & OpenWeatherMap Geocoding</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+from starlette.applications import Starlette
+from starlette.responses import JSONResponse
+from starlette.routing import Route
+import httpx
+import os
+
+class GeocodingAgent:
+    """Location resolution using OpenWeatherMap Geocoding API"""
+
+    def __init__(self):
+        self.api_key = os.getenv("OPENWEATHERMAP_API_KEY")
+        self.base_url = "https://api.openweathermap.org/geo/1.0/direct"
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Starlette imports and geocoding agent class initialization</p>
+                </section>
+
+                <!-- Step 3B: Geocoding Implementation -->
+                <section>
+                    <h3>Step 3B: Geocoding Implementation</h3>
+                    <div class="code-title" style="font-size: 1.1em;">OpenWeatherMap API Integration</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+    async def geocode_location(self, location_name: str):
+        """Convert city name to coordinates using OpenWeatherMap API"""
+        params = {
+            "q": location_name,
+            "limit": 1,
+            "appid": self.api_key
+        }
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(self.base_url, params=params)
+            response.raise_for_status()
+            data = response.json()
+
+            if data:
+                result = data[0]
+                return {
+                    "name": result["name"],
+                    "country": result["country"],
+                    "lat": result["lat"],
+                    "lon": result["lon"],
+                    "state": result.get("state", "")
+                }
+            else:
+                raise ValueError(f"Location '{location_name}' not found")
+
+geocoding_agent = GeocodingAgent()
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Real geocoding implementation with error handling and structured response</p>
+                </section>
+
+                <!-- Step 4: Agent Discovery & Coordination -->
+                <section>
+                    <h3>Step 4: Weather Agent - Starlette Implementation</h3>
+                    <div class="code-title" style="font-size: 1.1em;">OpenWeatherMap One Call API 3.0 Service</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+class WeatherAgent:
+    """Weather data using OpenWeatherMap One Call API 3.0"""
+
+    def __init__(self):
+        self.api_key = os.getenv("OPENWEATHERMAP_API_KEY")
+        self.base_url = "https://api.openweathermap.org/data/3.0/onecall"
+
+    async def get_weather_data(self, lat: float, lon: float):
+        """Get current weather and forecasts using coordinates"""
+        params = {
+            "lat": lat,
+            "lon": lon,
+            "appid": self.api_key,
+            "units": "metric",
+            "exclude": "minutely,alerts"  # Focus on current + hourly + daily
+        }
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(self.base_url, params=params)
+            response.raise_for_status()
+            data = response.json()
+
+            current = data["current"]
+            return {
+                "current": {
+                    "temperature": current["temp"],
+                    "feels_like": current["feels_like"],
+                    "humidity": current["humidity"],
+                    "pressure": current["pressure"],
+                    "description": current["weather"][0]["description"],
+                    "icon": current["weather"][0]["icon"]
+                },
+                "hourly_forecast": data["hourly"][:24],  # Next 24 hours
+                "daily_forecast": data["daily"][:7],     # Next 7 days
+                "timezone": data["timezone"]
+            }
+
+weather_agent = WeatherAgent()
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Real weather agent using OpenWeatherMap One Call API 3.0 for comprehensive forecasts</p>
+                </section>
+
+                <!-- Step 5: Starlette A2A Endpoints -->
+                <section>
+                    <h3>Step 5: Starlette A2A Endpoints</h3>
+                    <div class="code-title" style="font-size: 1.1em;">JSON-RPC 2.0 HTTP Endpoints</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+async def a2a_geocoding_endpoint(request):
+    """A2A endpoint for geocoding agent on port 8002"""
+    data = await request.json()
+
+    if data.get("method") == "sendTask":
+        params = data["params"]
+        location_text = params["message"]["parts"][0]["text"]
+
+        try:
+            result = await geocoding_agent.geocode_location(location_text)
+            return JSONResponse({
+                "jsonrpc": "2.0",
+                "id": data["id"],
+                "result": {
+                    "task_id": params["id"],
+                    "status": "completed",
+                    "output": result
+                }
+            })
+        except Exception as e:
+            return JSONResponse({
+                "jsonrpc": "2.0",
+                "id": data["id"],
+                "error": {"code": -1, "message": str(e)}
+            })
+
+async def a2a_weather_endpoint(request):
+    """A2A endpoint for weather agent on port 8001"""
+    data = await request.json()
+
+    if data.get("method") == "sendTask":
+        params = data["params"]
+        # Extract coordinates from message text
+        text = params["message"]["parts"][0]["text"]
+        # Parse "lat=35.6762, lon=139.6503" format
+        lat = float(text.split("lat=")[1].split(",")[0])
+        lon = float(text.split("lon=")[1])
+
+        try:
+            result = await weather_agent.get_weather_data(lat, lon)
+            return JSONResponse({
+                "jsonrpc": "2.0",
+                "id": data["id"],
+                "result": {
+                    "task_id": params["id"],
+                    "status": "completed",
+                    "output": result
+                }
+            })
+        except Exception as e:
+            return JSONResponse({
+                "jsonrpc": "2.0",
+                "id": data["id"],
+                "error": {"code": -1, "message": str(e)}
+            })
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Starlette endpoints implementing A2A JSON-RPC 2.0 protocol for agent communication</p>
+                </section>
+
+                <!-- Step 6: Complete Application Setup -->
+                <section>
+                    <h3>Step 6: Complete Starlette Applications</h3>
+                    <div class="code-title" style="font-size: 1.1em;">Production-Ready A2A Agents</div>
+                    <pre style="font-size: 0.65em;"><code class="python">
+# Geocoding Agent Application (Port 8002)
+geocoding_routes = [
+    Route("/a2a", a2a_geocoding_endpoint, methods=["POST"]),
+    Route("/agent-card", lambda request: JSONResponse(location_agent_card), methods=["GET"])
+]
+geocoding_app = Starlette(routes=geocoding_routes)
+
+# Weather Agent Application (Port 8001)
+weather_routes = [
+    Route("/a2a", a2a_weather_endpoint, methods=["POST"]),
+    Route("/agent-card", lambda request: JSONResponse(weather_agent_card), methods=["GET"])
+]
+weather_app = Starlette(routes=weather_routes)
+
+# Run both agents
+if __name__ == "__main__":
+    import uvicorn
+    import multiprocessing
+
+    def run_geocoding():
+        uvicorn.run(geocoding_app, host="0.0.0.0", port=8002)
+
+    def run_weather():
+        uvicorn.run(weather_app, host="0.0.0.0", port=8001)
+
+    # Start both agents in parallel
+    geocoding_process = multiprocessing.Process(target=run_geocoding)
+    weather_process = multiprocessing.Process(target=run_weather)
+
+    geocoding_process.start()
+    weather_process.start()
+
+    geocoding_process.join()
+    weather_process.join()
+                    </code></pre>
+                    <p class="small-text" style="font-size: 0.7em;">Complete Starlette applications with agent card discovery and A2A endpoints</p>
+                </section>
+
+
+                <section>
+                    <h3>A2A vs MCP Protocols</h3>
+                    <div class="vs-comparison">
+                        <div>
+                            <h4>A2A (Agent-to-Agent)</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Purpose:</span> Inter-agent communication and coordination</li>
+                                <li><span class="highlight">Scope:</span> Multi-agent system orchestration</li>
+                                <li><span class="highlight">Protocol:</span> HTTP-based with JSON-RPC 2.0</li>
+                                <li><span class="highlight">Discovery:</span> Agent Cards and registries</li>
+                                <li><span class="highlight">Use Case:</span> Cross-framework agent collaboration</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>MCP (Model Context Protocol)</h4>
+                            <ul class="small-text">
+                                <li><span class="highlight">Purpose:</span> Model-to-resource communication</li>
+                                <li><span class="highlight">Scope:</span> External data and tool access</li>
+                                <li><span class="highlight">Protocol:</span> Standardized context interface</li>
+                                <li><span class="highlight">Discovery:</span> Resource and tool catalogs</li>
+                                <li><span class="highlight">Use Case:</span> LLM external system integration</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pattern-section">
+                        <h4>Complementary Protocols</h4>
+                        <p class="small-text">A2A enables agent-to-agent collaboration while MCP handles agent-to-resource communication. Together they provide comprehensive connectivity for multi-agent systems.</p>
+                    </div>
+                </section>
+
+                <!-- A2A Communication Rule of Thumb -->
+                <section>
+                    <h3 style="color: var(--primary-color); font-size: 1.8em;">🎯 When to Use A2A Communication</h3>
+                    <div class="pattern-section" style="background: #1a1a1a; padding: 1.5em; border-radius: 10px; border: 2px solid var(--primary-color);">
+                        <div style="text-align: left; font-size: 1.0em; line-height: 1.4;">
+                            <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 1em;">Use when you need standardized inter-agent communication and vendor-agnostic multi-agent coordination:</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; font-size: 0.9em;">
+                                <div>
+                                    <ul style="margin: 0; padding-left: 1.5em;">
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🌐 Cross-Framework Integration:</span> LangGraph + CrewAI + AutoGen collaboration</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🔄 Dynamic Agent Discovery:</span> Runtime discovery of available specialized agents</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">⚡ Distributed Processing:</span> Workload distribution across multiple agent systems</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🎯 Specialized Delegation:</span> Task routing to domain-specific expert agents</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <ul style="margin: 0; padding-left: 1.5em;">
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🏗️ Microservice Architecture:</span> Agent-based microservices with HTTP communication</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🔒 Enterprise Integration:</span> Standardized protocols for corporate AI systems</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">📈 Scalable Systems:</span> Horizontal scaling with agent federation</li>
+                                        <li style="margin: 0.5em 0;"><span style="color: #ffeb3b;">🛡️ Fault Tolerance:</span> Graceful degradation when specific agents are unavailable</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Pattern Integration -->
+            <section>
+                <h2>Pattern Synergies & Anti-Patterns</h2>
+                <div class="vs-comparison">
+                    <div>
+                        <h4>Powerful Combinations</h4>
+                        <ul class="small-text numbered-list">
+                            <li><span class="highlight">Chaining + Reflection</span><br>Sequential steps with quality improvement loops</li>
+                            <li><span class="highlight">Routing + A2A Communication</span><br>Cross-framework agent delegation and coordination</li>
+                            <li><span class="highlight">Parallelization + A2A</span><br>Distributed processing across multiple agent frameworks</li>
+                            <li><span class="highlight">Learning + A2A</span><br>Shared knowledge and collaborative improvement</li>
+                            <li><span class="highlight">Human-in-Loop + All Patterns</span><br>Human oversight across all operations</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Anti-Patterns to Avoid</h4>
+                        <ul class="small-text numbered-list">
+                            <li><span class="highlight">Over-chaining</span><br>Too many sequential steps create fragility</li>
+                            <li><span class="highlight">A2A Chatty Networks</span><br>Excessive inter-agent communication overhead</li>
+                            <li><span class="highlight">Premature Parallelization</span><br>Parallelizing dependent tasks</li>
+                            <li><span class="highlight">Infinite Reflection</span><br>No stopping criteria for improvement loops</li>
+                            <li><span class="highlight">Tool Sprawl</span><br>Too many unnecessary external dependencies</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Complete System Architecture -->
+            <section>
+                <h2>Ultimate System Architecture</h2>
+                <div class="emphasis-box">
+                    <h3>All Patterns Working in Harmony</h3>
+                    <p class="small-text">User Request → Intelligent Router → Parallel Execution → Sequential Synthesis → Quality Reflection → Learning Update → Human Oversight → Optimized Response</p>
+                </div>
+                <div class="pattern-section">
+                    <h4>System Flow</h4>
+                    <ol class="small-text numbered-list">
+                        <li><span class="highlight">Routing</span> analyzes intent and selects optimal execution path</li>
+                        <li><span class="highlight">Parallelization</span> executes independent data gathering tasks</li>
+                        <li><span class="highlight">Chaining</span> processes information through structured steps</li>
+                        <li><span class="highlight">Tool Use</span> integrates real-world data and capabilities</li>
+                        <li><span class="highlight">Reflection</span> ensures quality through iterative improvement</li>
+                        <li><span class="highlight">Learning</span> captures experience for future optimization</li>
+                        <li><span class="highlight">Human-in-Loop</span> provides oversight for critical decisions</li>
+                        <li><span class="highlight">A2A Communication</span> enables cross-framework collaboration</li>
+                    </ol>
+                </div>
+            </section>
+
+
+            <!-- Framework Mastery -->
+            <section>
+                <h2>Framework Mastery Principles</h2>
+                <div class="pattern-grid-six" style="margin: 2em 0;">
+                    <div class="pattern-card">
+                        <h4>Chaining</h4>
+                        <p class="small-text">Break complexity into focused, manageable steps with clear state transitions</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>Routing</h4>
+                        <p class="small-text">Supervisor-based delegation with specialized agents for optimal outcomes</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>Parallelization</h4>
+                        <p class="small-text">Execute independent tasks simultaneously for maximum efficiency</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>Reflection</h4>
+                        <p class="small-text">Self-correction through iterative critique and refinement cycles</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>Tool Use</h4>
+                        <p class="small-text">Secure, monitored access to external systems and real-time data</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>Learning</h4>
+                        <p class="small-text">Continuous adaptation and autonomous evolution through experience</p>
+                    </div>
+                </div>
+                <div class="vs-comparison" style="margin-top: 1em;">
+                    <div class="pattern-card" style="width: 100%;">
+                        <h4>Human-in-the-Loop</h4>
+                        <p class="small-text">Strategic human collaboration for critical decisions and continuous oversight</p>
+                    </div>
+                    <div class="pattern-card" style="width: 100%;">
+                        <h4>A2A Communication</h4>
+                        <p class="small-text">Cross-framework agent interoperability through standardized HTTP protocol</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Closing -->
+            <section data-background-gradient="linear-gradient(45deg, #1e1e1e, #2d2d2d)">
+                <h1>Complete Agentic AI Framework</h1>
+                <div class="emphasis-box">
+                    <h2>From Design to Production-Ready Systems</h2>
+                    <p class="small-text">Design fundamentals + Eight implementation patterns = Fully autonomous, self-improving AI agents capable of handling any real-world scenario with intelligence, efficiency, security, and continuous evolution.</p>
+                </div>
+                <div class="pattern-section">
+                    <h3>Ready for Implementation</h3>
+                    <p class="small-text">This complete framework provides everything needed for building enterprise-grade agentic AI systems: from architectural foundations to advanced patterns, enabling agents that learn, adapt, collaborate across frameworks, and maintain human oversight.</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; margin: 1.5em 0; flex-wrap: wrap;">
+                    <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                        Start Simple
+                    </div>
+                    <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                    <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                        Build Incrementally
+                    </div>
+                    <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                    <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                        Test Rigorously
+                    </div>
+                    <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                    <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                        Scale Systematically
+                    </div>
+                    <div style="color: var(--primary-color); font-size: 1.2em; margin: 0 0.2em;">→</div>
+                    <div style="background: #ffeb3b; color: #000; padding: 0.6em 1em; border: 2px solid #333; border-radius: 8px; font-weight: bold; margin: 0.2em; font-size: 0.85em;">
+                        Evolve Continuously
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+
+    <script>
+        // Initialize Reveal.js with optimized settings
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+
+            // Responsive configuration
+            width: 1280,
+            height: 720,
+            margin: 0.05, /* Reduced margin for more content space */
+            minScale: 0.3,
+            maxScale: 1.5,
+
+            // Plugin configuration
+            plugins: [ RevealHighlight, RevealNotes ],
+            
+            // Highlight.js configuration
+            highlight: {
+                highlightOnLoad: true,
+                theme: 'github-dark'
+            },
+            // Keyboard navigation
+            keyboard: {
+                39: 'next', // Right arrow
+                37: 'prev', // Left arrow
+                32: 'next'  // Spacebar
+            }
+        });
+
+        // Add progress indicator
+        Reveal.on('ready', event => {
+            console.log('Complete Agentic AI Design & Patterns presentation ready');
+        });
+
+        // Add custom navigation enhancements
+        Reveal.on('slidechanged', event => {
+            // Trigger animations for pattern cards
+            const cards = event.currentSlide.querySelectorAll('.pattern-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
